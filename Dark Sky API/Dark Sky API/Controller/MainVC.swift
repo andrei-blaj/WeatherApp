@@ -14,25 +14,40 @@ class MainVC: UIViewController, CLLocationManagerDelegate, UITextFieldDelegate {
 
     // Outlets
     @IBOutlet weak var settingsBtn: UIButton!
+    @IBOutlet weak var searchBtn: UIButton!
+    @IBOutlet weak var moreDetailsBtn: UIButton!
+    @IBOutlet weak var locationBtn: UIButton!
+    
     @IBOutlet weak var cityLbl: UILabel!
     @IBOutlet weak var regionLabel: UILabel!
     @IBOutlet weak var temperatureLbl: UILabel!
+    
     @IBOutlet weak var searchTextField: UITextField!
-    @IBOutlet weak var searchBtn: UIButton!
-    @IBOutlet weak var locationBtn: UIButton!
-    @IBOutlet weak var summaryLbl: UILabel!
+    
+    // More Details View Outlets
+    @IBOutlet weak var moreDetailsView: UIView!
+    @IBOutlet weak var moreDetailsTemperatureLbl: UILabel!
+    @IBOutlet weak var moreDetailsSummaryLbl: UILabel!
+    @IBOutlet weak var moreDetailsCurrentConditionImg: UIImageView!
+    @IBOutlet weak var moreDetailsHourlySummary: UILabel!
+    
+    // Constraints
+    @IBOutlet weak var moreDetailsBottomConstraint: NSLayoutConstraint!
     
     // Variables
     var locationManager = CLLocationManager()
     var currentLocation: CLLocation!
     var searchCancelBtnState: ButtonState!
+    var moreDetailsCancelBtnState: MoreDetailsButtonState!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         searchTextField.delegate = self
+        moreDetailsView.isHidden = true
         
         searchCancelBtnState = .search
+        moreDetailsCancelBtnState = .more
         
         settingsBtn.addTarget(self.revealViewController(), action: #selector(SWRevealViewController.revealToggle(_:)), for: .touchUpInside)
         self.view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
@@ -44,6 +59,7 @@ class MainVC: UIViewController, CLLocationManagerDelegate, UITextFieldDelegate {
         super.viewWillAppear(animated)
         
         self.searchTextField.alpha = 0.0
+        self.moreDetailsView.alpha = 0.0
         
         locationManager.delegate = self
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
@@ -72,14 +88,12 @@ class MainVC: UIViewController, CLLocationManagerDelegate, UITextFieldDelegate {
             self.cityLbl.alpha = 0.0
             self.regionLabel.alpha = 0.0
             self.temperatureLbl.alpha = 0.0
-            self.summaryLbl.alpha = 0.0
         }
         
         cityLbl.text = Location.instance.city
         regionLabel.text = "\(Location.instance.region), \(Location.instance.countryCode)"
         
         temperatureLbl.text = " \(Int(round(DataService.instance.currentConditions.temperature)))\(DEGREE_SIGN)"
-        summaryLbl.text = "\(DataService.instance.currentConditions.summary.capitalized)"
         
         searchCancelBtnState = .search
         
@@ -94,7 +108,6 @@ class MainVC: UIViewController, CLLocationManagerDelegate, UITextFieldDelegate {
             self.cityLbl.alpha = 1.0
             self.regionLabel.alpha = 1.0
             self.temperatureLbl.alpha = 1.0
-            self.summaryLbl.alpha = 1.0
             
             self.searchTextField.alpha = 0.0
             self.searchBtn.alpha = 1.0
@@ -157,14 +170,14 @@ class MainVC: UIViewController, CLLocationManagerDelegate, UITextFieldDelegate {
                 placemark = placemarks?[0]
                 
                 DataService.instance.getLocationData(placemark: placemark!)
-                    DataService.instance.downloadDarkSkyData(completed: { (success) in
-                        if success {
-                            print("> Success")
-                            self.updateLabels()
-                        } else {
-                            print("> Failed to obtain a response from the API.")
-                        }
-                    })
+                DataService.instance.downloadDarkSkyData(completed: { (success) in
+                    if success {
+                        print("> Success")
+                        self.updateLabels()
+                    } else {
+                        print("> Failed to obtain a response from the API.")
+                    }
+                })
             }
         })
         
@@ -188,7 +201,6 @@ class MainVC: UIViewController, CLLocationManagerDelegate, UITextFieldDelegate {
                 self.cityLbl.alpha = 0.0
                 self.regionLabel.alpha = 0.0
                 self.temperatureLbl.alpha = 0.0
-                self.summaryLbl.alpha = 0.0
 
                 self.searchTextField.alpha = 1.0
                 self.searchBtn.alpha = 1.0
@@ -215,7 +227,6 @@ class MainVC: UIViewController, CLLocationManagerDelegate, UITextFieldDelegate {
             self.cityLbl.alpha = 1.0
             self.regionLabel.alpha = 1.0
             self.temperatureLbl.alpha = 1.0
-            self.summaryLbl.alpha = 1.0
             
             self.searchTextField.alpha = 0.0
             self.searchBtn.alpha = 1.0
@@ -224,6 +235,41 @@ class MainVC: UIViewController, CLLocationManagerDelegate, UITextFieldDelegate {
     
     @IBAction func onLocationBtnPressed(_ sender: Any) {
         loadLocationData(forLatitude: currentLocation.coordinate.latitude, andLongitude: currentLocation.coordinate.longitude)
+    }
+    
+    @IBAction func onMoreDetailsBtnPressed(_ sender: Any) {
+        /*
+        if moreDetailsCancelBtnState == .more {
+            self.moreDetailsCancelBtnState = .cancel
+            
+            UIView.animate(withDuration: 0.3, animations: {
+                self.moreDetailsBtn.alpha = 0.0
+            })
+            
+            self.moreDetailsBtn.setImage(UIImage(named: "cancel_btn"), for: .normal)
+            
+            UIView.animate(withDuration: 0.3) {
+                self.temperatureLbl.alpha = 0.0
+                self.moreDetailsBtn.alpha = 1.0
+                self.moreDetailsView.alpha = 1.0
+            }
+            
+        } else {
+            self.moreDetailsCancelBtnState = .more
+            
+            UIView.animate(withDuration: 0.3, animations: {
+                self.moreDetailsBtn.alpha = 0.0
+            })
+            
+            self.moreDetailsBtn.setImage(UIImage(named: "menu"), for: .normal)
+            
+            UIView.animate(withDuration: 0.3) {
+                self.temperatureLbl.alpha = 1.0
+                self.moreDetailsBtn.alpha = 0.0
+                self.moreDetailsView.alpha = 0.0
+            }
+        }
+         */
     }
 }
 

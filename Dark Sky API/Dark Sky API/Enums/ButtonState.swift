@@ -12,3 +12,8 @@ enum ButtonState: String {
     case search = "search"
     case cancel = "cancel"
 }
+
+enum MoreDetailsButtonState: String {
+    case more = "more"
+    case cancel = "cancel"
+}
