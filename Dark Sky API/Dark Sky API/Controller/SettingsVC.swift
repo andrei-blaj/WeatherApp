@@ -15,5 +15,11 @@ class SettingsVC: UIViewController {
 
         self.revealViewController().rearViewRevealWidth = self.view.frame.size.width - 60
     }
-
+    
+    @IBAction func onPoweredByDarkSkyPressed(_ sender: Any) {
+        if let url = URL(string: "https://darksky.net/poweredby/") {
+            UIApplication.shared.open(url, options: [:], completionHandler: { (success) in })
+        }
+    }
+    
 }

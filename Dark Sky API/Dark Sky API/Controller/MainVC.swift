@@ -20,6 +20,7 @@ class MainVC: UIViewController, CLLocationManagerDelegate, UITextFieldDelegate {
     @IBOutlet weak var searchTextField: UITextField!
     @IBOutlet weak var searchBtn: UIButton!
     @IBOutlet weak var locationBtn: UIButton!
+    @IBOutlet weak var summaryLbl: UILabel!
     
     // Variables
     var locationManager = CLLocationManager()
@@ -71,12 +72,14 @@ class MainVC: UIViewController, CLLocationManagerDelegate, UITextFieldDelegate {
             self.cityLbl.alpha = 0.0
             self.regionLabel.alpha = 0.0
             self.temperatureLbl.alpha = 0.0
+            self.summaryLbl.alpha = 0.0
         }
         
         cityLbl.text = Location.instance.city
         regionLabel.text = "\(Location.instance.region), \(Location.instance.countryCode)"
         
         temperatureLbl.text = " \(Int(round(DataService.instance.currentConditions.temperature)))\(DEGREE_SIGN)"
+        summaryLbl.text = "\(DataService.instance.currentConditions.summary.capitalized)"
         
         searchCancelBtnState = .search
         
@@ -91,6 +94,7 @@ class MainVC: UIViewController, CLLocationManagerDelegate, UITextFieldDelegate {
             self.cityLbl.alpha = 1.0
             self.regionLabel.alpha = 1.0
             self.temperatureLbl.alpha = 1.0
+            self.summaryLbl.alpha = 1.0
             
             self.searchTextField.alpha = 0.0
             self.searchBtn.alpha = 1.0
@@ -184,6 +188,7 @@ class MainVC: UIViewController, CLLocationManagerDelegate, UITextFieldDelegate {
                 self.cityLbl.alpha = 0.0
                 self.regionLabel.alpha = 0.0
                 self.temperatureLbl.alpha = 0.0
+                self.summaryLbl.alpha = 0.0
 
                 self.searchTextField.alpha = 1.0
                 self.searchBtn.alpha = 1.0
@@ -210,6 +215,7 @@ class MainVC: UIViewController, CLLocationManagerDelegate, UITextFieldDelegate {
             self.cityLbl.alpha = 1.0
             self.regionLabel.alpha = 1.0
             self.temperatureLbl.alpha = 1.0
+            self.summaryLbl.alpha = 1.0
             
             self.searchTextField.alpha = 0.0
             self.searchBtn.alpha = 1.0
