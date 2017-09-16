@@ -31,9 +31,6 @@ class MainVC: UIViewController, CLLocationManagerDelegate, UITextFieldDelegate {
     @IBOutlet weak var moreDetailsCurrentConditionImg: UIImageView!
     @IBOutlet weak var moreDetailsHourlySummary: UILabel!
     
-    // Constraints
-    @IBOutlet weak var moreDetailsBottomConstraint: NSLayoutConstraint!
-    
     // Variables
     var locationManager = CLLocationManager()
     var currentLocation: CLLocation!
@@ -44,7 +41,6 @@ class MainVC: UIViewController, CLLocationManagerDelegate, UITextFieldDelegate {
         super.viewDidLoad()
         
         searchTextField.delegate = self
-        moreDetailsView.isHidden = true
         
         searchCancelBtnState = .search
         moreDetailsCancelBtnState = .more
@@ -80,6 +76,14 @@ class MainVC: UIViewController, CLLocationManagerDelegate, UITextFieldDelegate {
         } else {
             locationManager.requestWhenInUseAuthorization()
         }
+    }
+    
+    func updateDetails() {
+        
+        self.moreDetailsTemperatureLbl.text = " \(Int(round(DataService.instance.currentConditions.temperature)))\(DEGREE_SIGN)"
+        self.moreDetailsSummaryLbl.text = "\(DataService.instance.currentConditions.summary)"
+        self.moreDetailsHourlySummary.text = "\(DataService.instance.hourlySummary!)"
+        
     }
     
     func updateLabels() {
@@ -238,14 +242,19 @@ class MainVC: UIViewController, CLLocationManagerDelegate, UITextFieldDelegate {
     }
     
     @IBAction func onMoreDetailsBtnPressed(_ sender: Any) {
-        /*
+        
         if moreDetailsCancelBtnState == .more {
-            self.moreDetailsCancelBtnState = .cancel
             
+            updateDetails()
+            
+            self.moreDetailsCancelBtnState = .cancel
+
             UIView.animate(withDuration: 0.3, animations: {
                 self.moreDetailsBtn.alpha = 0.0
+                self.locationBtn.alpha = 0.0
             })
-            
+
+            self.moreDetailsBtn.setBackgroundImage(nil, for: .normal)
             self.moreDetailsBtn.setImage(UIImage(named: "cancel_btn"), for: .normal)
             
             UIView.animate(withDuration: 0.3) {
@@ -255,21 +264,27 @@ class MainVC: UIViewController, CLLocationManagerDelegate, UITextFieldDelegate {
             }
             
         } else {
-            self.moreDetailsCancelBtnState = .more
             
+            self.moreDetailsCancelBtnState = .more
+
             UIView.animate(withDuration: 0.3, animations: {
                 self.moreDetailsBtn.alpha = 0.0
             })
-            
-            self.moreDetailsBtn.setImage(UIImage(named: "menu"), for: .normal)
-            
+
+            self.moreDetailsBtn.setImage(nil, for: .normal)
+            self.moreDetailsBtn.setBackgroundImage(UIImage(named: "menu"), for: .normal)
+
             UIView.animate(withDuration: 0.3) {
                 self.temperatureLbl.alpha = 1.0
-                self.moreDetailsBtn.alpha = 0.0
+                self.moreDetailsBtn.alpha = 1.0
+                self.locationBtn.alpha = 1.0
                 self.moreDetailsView.alpha = 0.0
             }
         }
-         */
+ 
     }
+    
+    
+    
 }
 
