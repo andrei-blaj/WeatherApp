@@ -33,19 +33,19 @@ class DataService {
                 
                 if let currently = result["currently"] as? Dictionary<String, Any> {
                     // Current Weather
-                    self.currentConditions.time = currently["time"] as! Double
-                    self.currentConditions.summary = currently["summary"] as! String
-                    self.currentConditions.icon = currently["icon"] as! String
-                    self.currentConditions.precipProbability = currently["precipProbability"] as! Double
-                    // self.currentConditions.precipIntensity = currently["precipIntensity"] as! Double
-                    self.currentConditions.temperature = currently["temperature"] as! Double
-                    // self.currentConditions.apparentTemperature = currently["apparentTemperature"] as! Double
-                    self.currentConditions.humidity = currently["humidity"] as! Double
-                    self.currentConditions.pressure = currently["pressure"] as! Double
-                    self.currentConditions.windSpeed = currently["windSpeed"] as! Double
-                    self.currentConditions.windGust = currently["windGust"] as! Double
-                    self.currentConditions.windBearing = currently["windBearing"] as! Double
-                    self.currentConditions.cloudCover = currently["cloudCover"] as! Double
+                    if let time = currently["time"] as? Double { self.currentConditions.time = time }
+                    if let summary = currently["summary"] as? String { self.currentConditions.summary = summary }
+                    if let icon = currently["icon"] as? String { self.currentConditions.icon = icon }
+                    if let precipProbability = currently["precipProbability"] as? Double { self.currentConditions.precipProbability = precipProbability }
+                    if let precipIntensity = currently["precipIntensity"] as? Double { self.currentConditions.precipIntensity = precipIntensity }
+                    if let temperature = currently["temperature"] as? Double { self.currentConditions.temperature = temperature }
+                    if let apparentTemperature = currently["apparentTemperature"] as? Double { self.currentConditions.apparentTemperature = apparentTemperature }
+                    if let humidity = currently["humidity"] as? Double { self.currentConditions.humidity = humidity }
+                    if let pressure = currently["pressure"] as? Double { self.currentConditions.pressure = pressure }
+                    if let windSpeed = currently["windSpeed"] as? Double { self.currentConditions.windSpeed = windSpeed }
+                    if let windGust = currently["windGust"] as? Double { self.currentConditions.windGust = windGust }
+                    if let windBearing = currently["windBearing"] as? Double { self.currentConditions.windBearing = windBearing }
+                    if let cloudCover = currently["cloudCover"] as? Double { self.currentConditions.cloudCover = cloudCover }
                 }
                 
                 // There is also and "minutely" dictionary, but in this case it is not necessary
@@ -58,19 +58,19 @@ class DataService {
                         for currently in data {
                             let currentHour = HourlyForecast()
                             
-                            currentHour.time = currently["time"] as! Double
-                            currentHour.summary = currently["summary"] as! String
-                            currentHour.icon = currently["icon"] as! String
-                            currentHour.precipProbability = currently["precipProbability"] as! Double
-                            // currentHour.precipIntensity = currently["precipIntensity"] as! Double
-                            currentHour.temperature = currently["temperature"] as! Double
-                            // currentHour.apparentTemperature = currently["apparentTemperature"] as! Double
-                            currentHour.humidity = currently["humidity"] as! Double
-                            currentHour.pressure = currently["pressure"] as! Double
-                            currentHour.windSpeed = currently["windSpeed"] as! Double
-                            currentHour.windGust = currently["windGust"] as! Double
-                            currentHour.windBearing = currently["windBearing"] as! Double
-                            currentHour.cloudCover = currently["cloudCover"] as! Double
+                            if let time = currently["time"] as? Double { currentHour.time = time }
+                            if let summary = currently["summary"] as? String { currentHour.summary = summary }
+                            if let icon = currently["icon"] as? String { currentHour.icon = icon }
+                            if let precipProbability = currently["precipProbability"] as? Double { currentHour.precipProbability = precipProbability }
+                            if let precipIntensity = currently["precipIntensity"] as? Double { currentHour.precipIntensity = precipIntensity }
+                            if let temperature = currently["temperature"] as? Double { currentHour.temperature = temperature }
+                            if let apparentTemperature = currently["apparentTemperature"] as? Double { currentHour.apparentTemperature = apparentTemperature }
+                            if let humidity = currently["humidity"] as? Double { currentHour.humidity = humidity }
+                            if let pressure = currently["pressure"] as? Double { currentHour.pressure = pressure }
+                            if let windSpeed = currently["windSpeed"] as? Double { currentHour.windSpeed = windSpeed }
+                            if let windGust = currently["windGust"] as? Double { currentHour.windGust = windGust }
+                            if let windBearing = currently["windBearing"] as? Double { currentHour.windBearing = windBearing }
+                            if let cloudCover = currently["cloudCover"] as? Double { currentHour.cloudCover = cloudCover }
                             
                             self.hourlyForecast.append(currentHour)
                         }
@@ -85,28 +85,28 @@ class DataService {
                         for day in data {
                             let currentDay = DailyForecast()
 
-                            currentDay.time = day["time"] as! Double
-                            currentDay.summary = day["summary"] as! String
-                            currentDay.icon = day["icon"] as! String
-                            currentDay.precipProbability = day["precipProbability"] as! Double
-                            // currentDay.precipIntensity = day["precipIntensity"] as! Double
-                            // currentDay.precipType = day["precipType"] as! String
-                            currentDay.humidity = day["humidity"] as! Double
-                            currentDay.pressure = day["pressure"] as! Double
-                            currentDay.windSpeed = day["windSpeed"] as! Double
-                            currentDay.windGust = day["windGust"] as! Double
-                            currentDay.windBearing = day["windBearing"] as! Double
-                            currentDay.cloudCover = day["cloudCover"] as! Double
-
-                            currentDay.sunriseTime = day["sunriseTime"] as! Double
-                            currentDay.sunsetTime = day["sunsetTime"] as! Double
-                            currentDay.moonPhase = day["moonPhase"] as! Double
-                            currentDay.precipIntensityMax = day["precipIntensityMax"] as! Double
-                            // currentDay.precipIntensityMaxTime = day["precipIntensityMaxTime"] as! Double
-                            currentDay.temperatureHigh = day["temperatureHigh"] as! Double
-                            currentDay.temperatureHighTime = day["temperatureHighTime"] as! Double
-                            currentDay.temperatureLow = day["temperatureLow"] as! Double
-                            currentDay.temperatureLowTime = day["temperatureLowTime"] as! Double
+                            if let time = day["time"] as? Double { currentDay.time = time }
+                            if let summary = day["summary"] as? String { currentDay.summary = summary }
+                            if let icon = day["icon"] as? String { currentDay.icon = icon }
+                            if let precipProbability = day["precipProbability"] as? Double { currentDay.precipProbability = precipProbability }
+                            if let precipIntensity = day["precipIntensity"] as? Double { currentDay.precipIntensity = precipIntensity }
+                            if let precipType = day["precipType"] as? String { currentDay.precipType = precipType }
+                            if let humidity = day["humidity"] as? Double { currentDay.humidity = humidity }
+                            if let pressure = day["pressure"] as? Double { currentDay.pressure = pressure }
+                            if let windSpeed = day["windSpeed"] as? Double { currentDay.windSpeed = windSpeed }
+                            if let windGust = day["windGust"] as? Double { currentDay.windGust = windGust }
+                            if let windBearing = day["windBearing"] as? Double { currentDay.windBearing = windBearing }
+                            if let cloudCover = day["cloudCover"] as? Double { currentDay.cloudCover = cloudCover }
+                            
+                            if let sunriseTime = day["sunriseTime"] as? Double { currentDay.sunriseTime = sunriseTime }
+                            if let sunsetTime = day["sunsetTime"] as? Double { currentDay.sunsetTime = sunsetTime }
+                            if let moonPhase = day["moonPhase"] as? Double { currentDay.moonPhase = moonPhase }
+                            if let precipIntensityMax = day["precipIntensityMax"] as? Double { currentDay.precipIntensityMax = precipIntensityMax }
+                            if let precipIntensityMaxTime = day["precipIntensityMaxTime"] as? Double { currentDay.precipIntensityMaxTime = precipIntensityMaxTime }
+                            if let temperatureHigh = day["temperatureHigh"] as? Double { currentDay.temperatureHigh = temperatureHigh }
+                            if let temperatureHighTime = day["temperatureHighTime"] as? Double { currentDay.temperatureHighTime = temperatureHighTime }
+                            if let temperatureLow = day["temperatureLow"] as? Double { currentDay.temperatureLow = temperatureLow }
+                            if let temperatureLowTime = day["temperatureLowTime"] as? Double { currentDay.temperatureLowTime = temperatureLowTime }
 
                             self.dailyForecast.append(currentDay)
 

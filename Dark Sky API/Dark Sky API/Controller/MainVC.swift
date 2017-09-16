@@ -37,6 +37,7 @@ class MainVC: UIViewController, CLLocationManagerDelegate, UITextFieldDelegate {
     var searchCancelBtnState: ButtonState!
     var moreDetailsCancelBtnState: MoreDetailsButtonState!
     
+    // View Did Load
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -51,6 +52,7 @@ class MainVC: UIViewController, CLLocationManagerDelegate, UITextFieldDelegate {
         
     }
     
+    // View Will Appear
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
@@ -63,6 +65,7 @@ class MainVC: UIViewController, CLLocationManagerDelegate, UITextFieldDelegate {
         locationManager.startMonitoringSignificantLocationChanges()
     }
     
+    // Location Manager
     func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
         if CLLocationManager.authorizationStatus() == .authorizedWhenInUse {
             currentLocation = self.locationManager.location
@@ -78,14 +81,69 @@ class MainVC: UIViewController, CLLocationManagerDelegate, UITextFieldDelegate {
         }
     }
     
-    func updateDetails() {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        searchByUserInput()
+        return true
+    }
+    
+    // Search for a city and find its coordinates
+    func searchByUserInput() {
+        // 1. Hide the keyboard
+        self.view.endEditing(true)
+        // 2. Get the inserted text from the textField as a City Name
+        let cityName = searchTextField.text!
+        // 3. Search for the City Name using the MapKit and get the coordinates
+        let searchRequest = MKLocalSearchRequest()
+        searchRequest.naturalLanguageQuery = cityName
         
-        self.moreDetailsTemperatureLbl.text = " \(Int(round(DataService.instance.currentConditions.temperature)))\(DEGREE_SIGN)"
-        self.moreDetailsSummaryLbl.text = "\(DataService.instance.currentConditions.summary)"
-        self.moreDetailsHourlySummary.text = "\(DataService.instance.hourlySummary!)"
+        let activeSearch = MKLocalSearch(request: searchRequest)
+        
+        // Search for the city name
+        activeSearch.start { (response, error) in
+            if response == nil {
+                debugPrint(error?.localizedDescription as String!)
+            } else {
+                
+                let newLatitude = response?.boundingRegion.center.latitude
+                let newLongitude = response?.boundingRegion.center.longitude
+                // Update the MainVC labels with the new information & Hide the search bar
+                self.loadLocationData(forLatitude: newLatitude!, andLongitude: newLongitude!)
+            }
+        }
         
     }
     
+    // Load the data for the passed coordinates
+    func loadLocationData(forLatitude x: CLLocationDegrees, andLongitude y: CLLocationDegrees) {
+        
+        Location.instance.latitude = x
+        Location.instance.longitude = y
+        
+        let geoCoder = CLGeocoder()
+        let location = CLLocation(latitude: x, longitude: y)
+        
+        // Getting the correct information about the user's location
+        geoCoder.reverseGeocodeLocation(location, completionHandler: { (placemarks, error) in
+            if error == nil {
+                // Place details
+                var placemark: CLPlacemark?
+                placemark = placemarks?[0]
+                
+                DataService.instance.getLocationData(placemark: placemark!)
+                DataService.instance.downloadDarkSkyData(completed: { (success) in
+                    if success {
+                        print("> Success")
+                        self.updateLabels()
+                    } else {
+                        print("> Failed to obtain a response from the API.")
+                    }
+                })
+            }
+        })
+        
+    }
+    
+    // Update the labels in the Main View Controller
     func updateLabels() {
         
         UIView.animate(withDuration: 0.5) {
@@ -119,74 +177,7 @@ class MainVC: UIViewController, CLLocationManagerDelegate, UITextFieldDelegate {
         
     }
     
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        // When the search button is pressed, I should:
-        // 1. Hide the keyboard
-        // 2. Get the inserted text from the textField as a City Name
-        // 3. Search for the City Name using the MapKit and get the coordinates
-        // 4. Update the MainVC labels with the new information
-        // 5. Hide the search bar
-        
-        searchByUserInput()
-        
-        return true
-    }
-    
-    func searchByUserInput() {
-        // 1.
-        self.view.endEditing(true)
-        // 2.
-        let cityName = searchTextField.text!
-        print(cityName)
-        // 3
-        let searchRequest = MKLocalSearchRequest()
-        searchRequest.naturalLanguageQuery = cityName
-        
-        let activeSearch = MKLocalSearch(request: searchRequest)
-        
-        activeSearch.start { (response, error) in
-            if response == nil {
-                debugPrint(error?.localizedDescription)
-            } else {
-                
-                let newLatitude = response?.boundingRegion.center.latitude
-                let newLongitude = response?.boundingRegion.center.longitude
-                // 4 & 5
-                self.loadLocationData(forLatitude: newLatitude!, andLongitude: newLongitude!)
-            }
-        }
-        
-    }
-    
-    func loadLocationData(forLatitude x: CLLocationDegrees, andLongitude y: CLLocationDegrees) {
-        
-        Location.instance.latitude = x
-        Location.instance.longitude = y
-        
-        let geoCoder = CLGeocoder()
-        let location = CLLocation(latitude: x, longitude: y)
-        
-        // Getting the correct information about the user's location
-        geoCoder.reverseGeocodeLocation(location, completionHandler: { (placemarks, error) in
-            if error == nil {
-                // Place details
-                var placemark: CLPlacemark?
-                placemark = placemarks?[0]
-                
-                DataService.instance.getLocationData(placemark: placemark!)
-                DataService.instance.downloadDarkSkyData(completed: { (success) in
-                    if success {
-                        print("> Success")
-                        self.updateLabels()
-                    } else {
-                        print("> Failed to obtain a response from the API.")
-                    }
-                })
-            }
-        })
-        
-    }
-    
+    // The moment the "Search" btn is pressed
     @IBAction func searchBtnPressed(_ sender: Any) {
         
         if searchCancelBtnState == .search {
@@ -213,34 +204,33 @@ class MainVC: UIViewController, CLLocationManagerDelegate, UITextFieldDelegate {
         } else {
             self.view.endEditing(true)
             
-            animateSearchBtn()
-        }
-    }
-    
-    func animateSearchBtn() {
-        searchCancelBtnState = .search
-        
-        UIView.animate(withDuration: 0.3, animations: {
-            self.searchBtn.alpha = 0.0
-        })
-        
-        searchBtn.setImage(UIImage(named: "search_btn"), for: .normal)
-        
-        // Animate the labels back in
-        UIView.animate(withDuration: 0.3, animations: {
-            self.cityLbl.alpha = 1.0
-            self.regionLabel.alpha = 1.0
-            self.temperatureLbl.alpha = 1.0
+            searchCancelBtnState = .search
             
-            self.searchTextField.alpha = 0.0
-            self.searchBtn.alpha = 1.0
-        })
+            UIView.animate(withDuration: 0.3, animations: {
+                self.searchBtn.alpha = 0.0
+            })
+            
+            searchBtn.setImage(UIImage(named: "search_btn"), for: .normal)
+            
+            // Animate the labels back in
+            UIView.animate(withDuration: 0.3, animations: {
+                self.cityLbl.alpha = 1.0
+                self.regionLabel.alpha = 1.0
+                self.temperatureLbl.alpha = 1.0
+                
+                self.searchTextField.alpha = 0.0
+                self.searchBtn.alpha = 1.0
+            })
+        }
+        
     }
     
+    // The moment the "Location" Btn is pressed
     @IBAction func onLocationBtnPressed(_ sender: Any) {
         loadLocationData(forLatitude: currentLocation.coordinate.latitude, andLongitude: currentLocation.coordinate.longitude)
     }
     
+    // The moment the "More Details" Btn is pressed
     @IBAction func onMoreDetailsBtnPressed(_ sender: Any) {
         
         if moreDetailsCancelBtnState == .more {
@@ -252,6 +242,7 @@ class MainVC: UIViewController, CLLocationManagerDelegate, UITextFieldDelegate {
             UIView.animate(withDuration: 0.3, animations: {
                 self.moreDetailsBtn.alpha = 0.0
                 self.locationBtn.alpha = 0.0
+                self.searchBtn.alpha = 0.0
             })
 
             self.moreDetailsBtn.setBackgroundImage(nil, for: .normal)
@@ -278,13 +269,21 @@ class MainVC: UIViewController, CLLocationManagerDelegate, UITextFieldDelegate {
                 self.temperatureLbl.alpha = 1.0
                 self.moreDetailsBtn.alpha = 1.0
                 self.locationBtn.alpha = 1.0
+                self.searchBtn.alpha = 1.0
                 self.moreDetailsView.alpha = 0.0
             }
         }
  
     }
     
-    
+    // Update the labels and elements in the MoreDetailsView
+    func updateDetails() {
+        
+        self.moreDetailsTemperatureLbl.text = " \(Int(round(DataService.instance.currentConditions.temperature)))\(DEGREE_SIGN)"
+        self.moreDetailsSummaryLbl.text = "\(DataService.instance.currentConditions.summary)"
+        self.moreDetailsHourlySummary.text = "\(DataService.instance.hourlySummary!)"
+        
+    }
     
 }
 
