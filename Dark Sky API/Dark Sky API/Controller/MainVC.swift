@@ -42,22 +42,9 @@ class MainVC: UIViewController, CLLocationManagerDelegate, UITextFieldDelegate {
     var searchCancelBtnState: ButtonState!
     var moreDetailsCancelBtnState: MoreDetailsButtonState!
     
-    var measuringUnit = [MeasuringUnit]()
-    
     // View Did Load
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        fetch(completion: { (success) in
-            if success {
-                print(self.measuringUnit)
-                if self.measuringUnit.count == 0 {
-                    self.initiateMeasuringUnit(completion: { (success) in
-                        print(self.measuringUnit[0].unit)
-                    })
-                }
-            }
-        })
         
         searchTextField.delegate = self
         collectionView.delegate = self
@@ -72,20 +59,7 @@ class MainVC: UIViewController, CLLocationManagerDelegate, UITextFieldDelegate {
         
     }
     
-    func fetch(completion: DownloadComplete) {
-        
-        guard let managedContext = appDelegate?.persistentContainer.viewContext else { return }
-        let fetchRequest = NSFetchRequest<MeasuringUnit>(entityName: "MeasuringUnit")
-        
-        do {
-            measuringUnit = try managedContext.fetch(fetchRequest)
-            completion(true)
-        } catch {
-            debugPrint("Could not fetch: \(error.localizedDescription)")
-            completion(false)
-        }
-        
-    }
+    
     
     // View Will Appear
     override func viewWillAppear(_ animated: Bool) {
@@ -113,21 +87,6 @@ class MainVC: UIViewController, CLLocationManagerDelegate, UITextFieldDelegate {
             
         } else {
             locationManager.requestWhenInUseAuthorization()
-        }
-    }
-    
-    func initiateMeasuringUnit(completion: @escaping DownloadComplete) {
-        guard let managedContext = appDelegate?.persistentContainer.viewContext else { return }
-        let mUnit = MeasuringUnit(context: managedContext)
-        
-        mUnit.unit = "C"
-        
-        do {
-            try managedContext.save()
-            completion(true)
-        } catch {
-            debugPrint("Could not save: \(error.localizedDescription)")
-            completion(false)
         }
     }
     

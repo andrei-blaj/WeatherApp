@@ -11,13 +11,23 @@ import CoreData
 
 class SettingsVC: UIViewController {
 
+    // Outlets
     @IBOutlet weak var mainUnitBtn: UIButton!
     @IBOutlet weak var secondaryUnitBtn: UIButton!
+    
+    // Variables
+    var userSettings = [UserSettings]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
         self.revealViewController().rearViewRevealWidth = self.view.frame.size.width - 60
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        fetchCoreDataObjects()
     }
     
     @IBAction func onPoweredByDarkSkyPressed(_ sender: Any) {
@@ -28,28 +38,89 @@ class SettingsVC: UIViewController {
     
     @IBAction func onSecondaryUnitBtnPressed(_ sender: Any) {
         
+        var measuringUnitToSave = ""
+        
         if mainUnitBtn.currentTitle == "°C" {
             mainUnitBtn.setTitle("°F", for: .normal)
             secondaryUnitBtn.setTitle("°C", for: .normal)
+            measuringUnitToSave = "F"
         } else {
             mainUnitBtn.setTitle("°C", for: .normal)
             secondaryUnitBtn.setTitle("°F", for: .normal)
+            measuringUnitToSave = "C"
         }
         
-//        guard let managedContext = appDelegate?.persistentContainer.viewContext else { return }
-//        let measuringUnit = MeasuringUnit(context: managedContext)
+        saveMeasuringUnit(newMeasuringUnit: measuringUnitToSave)
+    }
+    
+    // Core Data
+    func saveMeasuringUnit(newMeasuringUnit: String) {
         
         guard let managedContext = appDelegate?.persistentContainer.viewContext else { return }
-        let fetchRequest = NSFetchRequest<MeasuringUnit>(entityName: "MeasuringUnit")
         
-        do {
-            let value = try managedContext.fetch(fetchRequest)
-            print(value)
-        } catch {
-            debugPrint("Could not fetch: \(error.localizedDescription)")
+        if userSettings.count < 1 {
+            return
         }
         
+        let userSetting = userSettings[0]
+        userSetting.measuringUnit = newMeasuringUnit
         
+        do {
+            try managedContext.save()
+            print("Successfully updated measuring unit!")
+        } catch {
+            debugPrint("Could not update measuring unit: \(error.localizedDescription)")
+        }
+        
+    }
+    
+    func fetchCoreDataObjects() {
+        self.fetch { (success) in
+            if success {
+                if userSettings.count > 0 {
+                    mainUnitBtn.setTitle("°\(userSettings[0].measuringUnit!)", for: .normal)
+                    
+                    if userSettings[0].measuringUnit! == "C" {
+                        secondaryUnitBtn.setTitle("°F", for: .normal)
+                    } else {
+                        secondaryUnitBtn.setTitle("°C", for: .normal)
+                    }
+                    
+                } else {
+                    self.save(completion: { (completed) in })
+                }
+            }
+        }
+    }
+    
+    func fetch(completion: DownloadComplete) {
+        
+        guard let managedContext = appDelegate?.persistentContainer.viewContext else { return }
+        let fetchRequest = NSFetchRequest<UserSettings>(entityName: "UserSettings")
+        
+        do {
+            userSettings = try managedContext.fetch(fetchRequest)
+            completion(true)
+        } catch {
+            debugPrint("Could not fetch: \(error.localizedDescription)")
+            completion(false)
+        }
+        
+    }
+    
+    func save(completion: DownloadComplete) {
+        guard let managedContext = appDelegate?.persistentContainer.viewContext else { return }
+        let userSetting = UserSettings(context: managedContext)
+        
+        userSetting.measuringUnit = "C"
+        
+        do {
+            try managedContext.save()
+            completion(true)
+        } catch {
+            debugPrint("Could not save: \(error.localizedDescription)")
+            completion(false)
+        }
     }
     
 }
