@@ -19,11 +19,13 @@
 		E4596EC91F673A750070EF5B /* CurrentConditions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4596EC81F673A750070EF5B /* CurrentConditions.swift */; };
 		E4596ECD1F67A6B00070EF5B /* DailyForecast.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4596ECC1F67A6B00070EF5B /* DailyForecast.swift */; };
 		E4AF42C21F682AC400A82E69 /* HourlyForecast.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4AF42C11F682AC400A82E69 /* HourlyForecast.swift */; };
+		E4BE69CB1F6D7CA8002B3778 /* HourlyConditionsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4BE69CA1F6D7CA8002B3778 /* HourlyConditionsCell.swift */; };
+		E4BE69CE1F6E92CB002B3778 /* Model.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = E4BE69CC1F6E92CB002B3778 /* Model.xcdatamodeld */; };
 		E4E21D311F6993A600BD9F60 /* SettingsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4E21D301F6993A600BD9F60 /* SettingsVC.swift */; };
 		E4E21D321F699D7B00BD9F60 /* SWRevealViewController.h in Sources */ = {isa = PBXBuildFile; fileRef = E4E21D2F1F69924400BD9F60 /* SWRevealViewController.h */; };
 		E4E21D331F699D8200BD9F60 /* SWRevealViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E4E21D2E1F69924400BD9F60 /* SWRevealViewController.m */; };
 		E4E21D351F69DFCE00BD9F60 /* CustomTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4E21D341F69DFCE00BD9F60 /* CustomTextField.swift */; };
-		E4E21D3A1F69E35A00BD9F60 /* ButtonState.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4E21D391F69E35A00BD9F60 /* ButtonState.swift */; };
+		E4E21D3A1F69E35A00BD9F60 /* Enums.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4E21D391F69E35A00BD9F60 /* Enums.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -43,12 +45,14 @@
 		E4596EC81F673A750070EF5B /* CurrentConditions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentConditions.swift; sourceTree = "<group>"; };
 		E4596ECC1F67A6B00070EF5B /* DailyForecast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyForecast.swift; sourceTree = "<group>"; };
 		E4AF42C11F682AC400A82E69 /* HourlyForecast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HourlyForecast.swift; sourceTree = "<group>"; };
+		E4BE69CA1F6D7CA8002B3778 /* HourlyConditionsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HourlyConditionsCell.swift; sourceTree = "<group>"; };
+		E4BE69CD1F6E92CB002B3778 /* Model.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model.xcdatamodel; sourceTree = "<group>"; };
 		E4E21D2D1F69924300BD9F60 /* Dark Sky API-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Dark Sky API-Bridging-Header.h"; sourceTree = "<group>"; };
 		E4E21D2E1F69924400BD9F60 /* SWRevealViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SWRevealViewController.m; sourceTree = "<group>"; };
 		E4E21D2F1F69924400BD9F60 /* SWRevealViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SWRevealViewController.h; sourceTree = "<group>"; };
 		E4E21D301F6993A600BD9F60 /* SettingsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsVC.swift; sourceTree = "<group>"; };
 		E4E21D341F69DFCE00BD9F60 /* CustomTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTextField.swift; sourceTree = "<group>"; };
-		E4E21D391F69E35A00BD9F60 /* ButtonState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonState.swift; sourceTree = "<group>"; };
+		E4E21D391F69E35A00BD9F60 /* Enums.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Enums.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -105,6 +109,7 @@
 				E44205001F672CAD00A5D9DC /* Assets.xcassets */,
 				E44205021F672CAD00A5D9DC /* LaunchScreen.storyboard */,
 				E44205051F672CAD00A5D9DC /* Info.plist */,
+				E4BE69CC1F6E92CB002B3778 /* Model.xcdatamodeld */,
 			);
 			path = "Dark Sky API";
 			sourceTree = "<group>";
@@ -122,6 +127,7 @@
 			isa = PBXGroup;
 			children = (
 				E4E21D341F69DFCE00BD9F60 /* CustomTextField.swift */,
+				E4BE69CA1F6D7CA8002B3778 /* HourlyConditionsCell.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -166,7 +172,7 @@
 		E4E21D361F69E33300BD9F60 /* Enums */ = {
 			isa = PBXGroup;
 			children = (
-				E4E21D391F69E35A00BD9F60 /* ButtonState.swift */,
+				E4E21D391F69E35A00BD9F60 /* Enums.swift */,
 			);
 			path = Enums;
 			sourceTree = "<group>";
@@ -303,10 +309,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E4BE69CB1F6D7CA8002B3778 /* HourlyConditionsCell.swift in Sources */,
 				E4E21D331F699D8200BD9F60 /* SWRevealViewController.m in Sources */,
+				E4BE69CE1F6E92CB002B3778 /* Model.xcdatamodeld in Sources */,
 				E4E21D321F699D7B00BD9F60 /* SWRevealViewController.h in Sources */,
 				E4596ECD1F67A6B00070EF5B /* DailyForecast.swift in Sources */,
-				E4E21D3A1F69E35A00BD9F60 /* ButtonState.swift in Sources */,
+				E4E21D3A1F69E35A00BD9F60 /* Enums.swift in Sources */,
 				E4AF42C21F682AC400A82E69 /* HourlyForecast.swift in Sources */,
 				E44204FC1F672CAD00A5D9DC /* MainVC.swift in Sources */,
 				E44204FA1F672CAD00A5D9DC /* AppDelegate.swift in Sources */,
@@ -509,6 +517,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		E4BE69CC1F6E92CB002B3778 /* Model.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				E4BE69CD1F6E92CB002B3778 /* Model.xcdatamodel */,
+			);
+			currentVersion = E4BE69CD1F6E92CB002B3778 /* Model.xcdatamodel */;
+			path = Model.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = E44204EE1F672CAD00A5D9DC /* Project object */;
 }

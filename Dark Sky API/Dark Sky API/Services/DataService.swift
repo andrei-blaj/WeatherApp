@@ -55,8 +55,11 @@ class DataService {
                     if let icon = hourly["icon"] as? String { self.hourlyIcon = icon }
                     if let data = hourly["data"] as? [Dictionary<String, Any>] {
                         // Weather by the hour
+                        var cnt: Int = 0
                         for currently in data {
                             let currentHour = HourlyForecast()
+                            
+                            cnt += 1
                             
                             if let time = currently["time"] as? Double { currentHour.time = time }
                             if let summary = currently["summary"] as? String { currentHour.summary = summary }
@@ -73,6 +76,10 @@ class DataService {
                             if let cloudCover = currently["cloudCover"] as? Double { currentHour.cloudCover = cloudCover }
                             
                             self.hourlyForecast.append(currentHour)
+                            
+                            if cnt == 36 {
+                                break
+                            }
                         }
                     }
                 }

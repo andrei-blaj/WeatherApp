@@ -9,6 +9,9 @@
 import UIKit
 import CoreLocation
 import MapKit
+import CoreData
+
+let appDelegate = UIApplication.shared.delegate as? AppDelegate
 
 class MainVC: UIViewController, CLLocationManagerDelegate, UITextFieldDelegate {
 
@@ -24,6 +27,8 @@ class MainVC: UIViewController, CLLocationManagerDelegate, UITextFieldDelegate {
     
     @IBOutlet weak var searchTextField: UITextField!
     
+    @IBOutlet weak var collectionView: UICollectionView!
+    
     // More Details View Outlets
     @IBOutlet weak var moreDetailsView: UIView!
     @IBOutlet weak var moreDetailsTemperatureLbl: UILabel!
@@ -37,11 +42,26 @@ class MainVC: UIViewController, CLLocationManagerDelegate, UITextFieldDelegate {
     var searchCancelBtnState: ButtonState!
     var moreDetailsCancelBtnState: MoreDetailsButtonState!
     
+    var measuringUnit = [MeasuringUnit]()
+    
     // View Did Load
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        fetch(completion: { (success) in
+            if success {
+                print(self.measuringUnit)
+                if self.measuringUnit.count == 0 {
+                    self.initiateMeasuringUnit(completion: { (success) in
+                        print(self.measuringUnit[0].unit)
+                    })
+                }
+            }
+        })
+        
         searchTextField.delegate = self
+        collectionView.delegate = self
+        collectionView.dataSource = self
         
         searchCancelBtnState = .search
         moreDetailsCancelBtnState = .more
@@ -49,6 +69,21 @@ class MainVC: UIViewController, CLLocationManagerDelegate, UITextFieldDelegate {
         settingsBtn.addTarget(self.revealViewController(), action: #selector(SWRevealViewController.revealToggle(_:)), for: .touchUpInside)
         self.view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
         self.view.addGestureRecognizer(self.revealViewController().tapGestureRecognizer())
+        
+    }
+    
+    func fetch(completion: DownloadComplete) {
+        
+        guard let managedContext = appDelegate?.persistentContainer.viewContext else { return }
+        let fetchRequest = NSFetchRequest<MeasuringUnit>(entityName: "MeasuringUnit")
+        
+        do {
+            measuringUnit = try managedContext.fetch(fetchRequest)
+            completion(true)
+        } catch {
+            debugPrint("Could not fetch: \(error.localizedDescription)")
+            completion(false)
+        }
         
     }
     
@@ -78,6 +113,21 @@ class MainVC: UIViewController, CLLocationManagerDelegate, UITextFieldDelegate {
             
         } else {
             locationManager.requestWhenInUseAuthorization()
+        }
+    }
+    
+    func initiateMeasuringUnit(completion: @escaping DownloadComplete) {
+        guard let managedContext = appDelegate?.persistentContainer.viewContext else { return }
+        let mUnit = MeasuringUnit(context: managedContext)
+        
+        mUnit.unit = "C"
+        
+        do {
+            try managedContext.save()
+            completion(true)
+        } catch {
+            debugPrint("Could not save: \(error.localizedDescription)")
+            completion(false)
         }
     }
     
@@ -280,10 +330,61 @@ class MainVC: UIViewController, CLLocationManagerDelegate, UITextFieldDelegate {
     func updateDetails() {
         
         self.moreDetailsTemperatureLbl.text = " \(Int(round(DataService.instance.currentConditions.temperature)))\(DEGREE_SIGN)"
-        self.moreDetailsSummaryLbl.text = "\(DataService.instance.currentConditions.summary)"
-        self.moreDetailsHourlySummary.text = "\(DataService.instance.hourlySummary!)"
+        self.moreDetailsSummaryLbl.text = DataService.instance.currentConditions.summary
+        self.moreDetailsHourlySummary.text = DataService.instance.hourlySummary
+        
+        self.moreDetailsCurrentConditionImg.image = UIImage(named: "\(DataService.instance.currentConditions.icon)")
+        
+        collectionView.reloadData()
         
     }
     
 }
+
+extension MainVC: UICollectionViewDelegate, UICollectionViewDataSource {
+    
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
+        return 1
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return DataService.instance.hourlyForecast.count
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        
+        if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "hourlyConditionsCell", for: indexPath) as? HourlyConditionsCell {
+            let hour = DataService.instance.hourlyForecast[indexPath.row]
+        
+            cell.configureCell(time: hour.time, image: hour.icon, temp: hour.temperature, index: indexPath.row)
+        
+            return cell
+        }
+        
+        return HourlyConditionsCell()
+    }
+    
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
