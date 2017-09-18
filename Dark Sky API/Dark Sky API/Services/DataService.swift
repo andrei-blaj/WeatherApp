@@ -16,6 +16,10 @@ class DataService {
     
     let currentConditions = CurrentConditions()
     
+    // User Settings
+    var currentMeasuringUnit: String!
+    var userSettings = [UserSettings]()
+    
     var hourlySummary: String!
     var hourlyIcon: String!
     var hourlyForecast = [HourlyForecast]()

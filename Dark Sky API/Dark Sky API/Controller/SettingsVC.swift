@@ -16,18 +16,16 @@ class SettingsVC: UIViewController {
     @IBOutlet weak var secondaryUnitBtn: UIButton!
     
     // Variables
-    var userSettings = [UserSettings]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
+        fetchCoreDataObjects()
         self.revealViewController().rearViewRevealWidth = self.view.frame.size.width - 60
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
-        fetchCoreDataObjects()
     }
     
     @IBAction func onPoweredByDarkSkyPressed(_ sender: Any) {
@@ -50,7 +48,11 @@ class SettingsVC: UIViewController {
             measuringUnitToSave = "C"
         }
         
+        DataService.instance.currentMeasuringUnit = measuringUnitToSave
         saveMeasuringUnit(newMeasuringUnit: measuringUnitToSave)
+        NotificationCenter.default.post(name: NOTIF_MEASURING_UNIT_CHANGED, object: nil)
+        
+        self.revealViewController().revealToggle(animated: true)
     }
     
     // Core Data
@@ -58,11 +60,12 @@ class SettingsVC: UIViewController {
         
         guard let managedContext = appDelegate?.persistentContainer.viewContext else { return }
         
-        if userSettings.count < 1 {
+        let settings = DataService.instance.userSettings
+        if settings.count < 1 {
             return
         }
         
-        let userSetting = userSettings[0]
+        let userSetting = settings[0]
         userSetting.measuringUnit = newMeasuringUnit
         
         do {
@@ -77,10 +80,11 @@ class SettingsVC: UIViewController {
     func fetchCoreDataObjects() {
         self.fetch { (success) in
             if success {
-                if userSettings.count > 0 {
-                    mainUnitBtn.setTitle("°\(userSettings[0].measuringUnit!)", for: .normal)
+                let settings = DataService.instance.userSettings
+                if settings.count > 0 {
+                    mainUnitBtn.setTitle("°\(settings[0].measuringUnit!)", for: .normal)
                     
-                    if userSettings[0].measuringUnit! == "C" {
+                    if settings[0].measuringUnit! == "C" {
                         secondaryUnitBtn.setTitle("°F", for: .normal)
                     } else {
                         secondaryUnitBtn.setTitle("°C", for: .normal)
@@ -99,7 +103,7 @@ class SettingsVC: UIViewController {
         let fetchRequest = NSFetchRequest<UserSettings>(entityName: "UserSettings")
         
         do {
-            userSettings = try managedContext.fetch(fetchRequest)
+            DataService.instance.userSettings = try managedContext.fetch(fetchRequest)
             completion(true)
         } catch {
             debugPrint("Could not fetch: \(error.localizedDescription)")

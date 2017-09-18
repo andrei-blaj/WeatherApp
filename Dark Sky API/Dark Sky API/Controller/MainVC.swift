@@ -42,16 +42,17 @@ class MainVC: UIViewController, CLLocationManagerDelegate, UITextFieldDelegate {
     var searchCancelBtnState: ButtonState!
     var moreDetailsCancelBtnState: MoreDetailsButtonState!
     
-    var userSettings = [UserSettings]()
-    var currentMeasuringUnit: String!
-    
     // View Did Load
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        DataService.instance.currentMeasuringUnit = ""
+        
         searchTextField.delegate = self
         collectionView.delegate = self
         collectionView.dataSource = self
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(MainVC.updateLabels(_:)), name: NOTIF_MEASURING_UNIT_CHANGED, object: nil)
         
         searchCancelBtnState = .search
         moreDetailsCancelBtnState = .more
@@ -62,6 +63,10 @@ class MainVC: UIViewController, CLLocationManagerDelegate, UITextFieldDelegate {
         
     }
     
+    @objc func updateLabels(_ notif: Notification) {
+        self.fetchCoreDataObjects()
+    }
+    
     // View Will Appear
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -69,8 +74,7 @@ class MainVC: UIViewController, CLLocationManagerDelegate, UITextFieldDelegate {
         self.searchTextField.alpha = 0.0
         self.moreDetailsView.alpha = 0.0
         
-        currentMeasuringUnit = ""
-        fetchCoreDataObjects()
+        DataService.instance.currentMeasuringUnit = ""
         
         locationManager.delegate = self
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
@@ -146,6 +150,7 @@ class MainVC: UIViewController, CLLocationManagerDelegate, UITextFieldDelegate {
                 DataService.instance.downloadDarkSkyData(completed: { (success) in
                     if success {
                         print("> Success")
+                        self.fetchCoreDataObjects()
                         self.updateLabels()
                     } else {
                         print("> Failed to obtain a response from the API.")
@@ -182,10 +187,12 @@ class MainVC: UIViewController, CLLocationManagerDelegate, UITextFieldDelegate {
         UIView.animate(withDuration: 0.5, animations: {
             self.cityLbl.alpha = 1.0
             self.regionLabel.alpha = 1.0
-            self.temperatureLbl.alpha = 1.0
+            if self.moreDetailsView.alpha == 0.0 {
+                self.temperatureLbl.alpha = 1.0
+                self.searchBtn.alpha = 1.0
+            }
             
             self.searchTextField.alpha = 0.0
-            self.searchBtn.alpha = 1.0
         })
         
     }
@@ -304,46 +311,34 @@ class MainVC: UIViewController, CLLocationManagerDelegate, UITextFieldDelegate {
     
     // Core Data
     func fetch(completion: DownloadComplete) {
-        
+
         guard let managedContext = appDelegate?.persistentContainer.viewContext else { return }
         let fetchRequest = NSFetchRequest<UserSettings>(entityName: "UserSettings")
-        
+
         do {
-            userSettings = try managedContext.fetch(fetchRequest)
+            DataService.instance.userSettings = try managedContext.fetch(fetchRequest)
             completion(true)
         } catch {
             debugPrint("Could not fetch: \(error.localizedDescription)")
             completion(false)
         }
-        
+
     }
-    
-    func save(completion: DownloadComplete) {
-        guard let managedContext = appDelegate?.persistentContainer.viewContext else { return }
-        let userSetting = UserSettings(context: managedContext)
-        
-        userSetting.measuringUnit = "C"
-        
-        do {
-            try managedContext.save()
-            completion(true)
-        } catch {
-            debugPrint("Could not save: \(error.localizedDescription)")
-            completion(false)
-        }
-    }
-    
+
     func fetchCoreDataObjects() {
         self.fetch { (success) in
             if success {
-                if userSettings.count > 0 {
-                    print(userSettings[0].measuringUnit)
-                    if currentMeasuringUnit == "" || currentMeasuringUnit != userSettings[0].measuringUnit {
-                        currentMeasuringUnit = userSettings[0].measuringUnit
-                        DataService.instance.convertTo(unit: userSettings[0].measuringUnit!)
+                let settings = DataService.instance.userSettings
+                if settings.count > 0 {
+                    let mUnit = DataService.instance.currentMeasuringUnit
+                    if mUnit == "" && settings[0].measuringUnit == "C" {
+                        // do nothing go ahead and load the data
+                    } else {
+                        DataService.instance.currentMeasuringUnit = settings[0].measuringUnit!
+                        DataService.instance.convertTo(unit: settings[0].measuringUnit!)
                     }
-                } else {
-                    self.save(completion: { (completed) in })
+                    updateLabels()
+                    updateDetails()
                 }
             }
         }

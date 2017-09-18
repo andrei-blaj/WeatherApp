@@ -11,8 +11,7 @@ import CoreLocation
 
 typealias DownloadComplete = (_ completed: Bool) -> ()
 
-// Dark Sky API
-
+// Dark Sky API Data
 let BASE_URL = "https://api.darksky.net/forecast/"
 let API_KEY = "55ea38a504bf2cc73c48d08f25791e5d/"
 let AUTO = "auto"
@@ -24,12 +23,8 @@ func getDarkSkyURL(forLatitude latitude: CLLocationDegrees, andLongitude longitu
     return url
 }
 
+// Special Characters
 let DEGREE_SIGN = "°"
 
-// Google Places API
-//
-//let GOOGLE_BASE_URL = "https://maps.googleapis.com/maps/api/place/autocomplete/json?input="
-//let GOOGLE_INBETWEEN_DATA = "&sensor=true&types=(cities)&key="
-//let GOOGLE_API_KEY = "AIzaSyCHwX_7njwiT4-g3ZHQp3y9x0Zt_R99kAA"
-//
-// https://maps.googleapis.com/maps/api/place/autocomplete/json?input=cluj&sensor=true&types=(cities)&key=AIzaSyD8k5Mih12Nlwdi5ovAqE6qz_x5SFTY_8I
+// Notification Constants
+let NOTIF_MEASURING_UNIT_CHANGED = Notification.Name("measuringUnitChanged")
