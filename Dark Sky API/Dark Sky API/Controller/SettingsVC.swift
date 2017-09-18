@@ -10,7 +10,7 @@ import UIKit
 import CoreData
 
 class SettingsVC: UIViewController {
-
+    
     // Outlets
     @IBOutlet weak var mainUnitBtn: UIButton!
     @IBOutlet weak var secondaryUnitBtn: UIButton!
@@ -67,7 +67,7 @@ class SettingsVC: UIViewController {
         
         do {
             try managedContext.save()
-            print("Successfully updated measuring unit!")
+            // print("Successfully updated measuring unit!")
         } catch {
             debugPrint("Could not update measuring unit: \(error.localizedDescription)")
         }

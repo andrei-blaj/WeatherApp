@@ -137,4 +137,25 @@ class DataService {
         if let x = placemark.isoCountryCode { Location.instance.countryCode = x }
     }
     
+    // Conversions
+    func convertTo(unit: String) {
+        currentConditions.temperature = convertTemp(t: currentConditions.temperature, toUnit: unit)
+        for hour in hourlyForecast {
+            hour.temperature = convertTemp(t: hour.temperature, toUnit: unit)
+        }
+        for day in dailyForecast {
+            day.temperature = convertTemp(t: day.temperature, toUnit: unit)
+            day.temperatureLow = convertTemp(t: day.temperatureLow, toUnit: unit)
+            day.temperatureHigh = convertTemp(t: day.temperatureHigh, toUnit: unit)
+        }
+    }
+    
+    func convertTemp(t: Double, toUnit: String) -> Double {
+        if toUnit == "F" {
+            return Double((t * (9 / 5)) + 32)
+        } else {
+            return Double((t - 32) * (5 / 9))
+        }
+    }
+    
 }
