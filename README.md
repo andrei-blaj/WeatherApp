@@ -30,4 +30,5 @@ Demo  |                                                          Search         
 * Adding more information about the weather conditions (i.e. Wind Speed, Pressure, Humidity, Sunrise, Sunset etc.)
 * The Dark Sky API is limited to 1000 calls over the period of 24h, maybe transfer to the [OpenWeatherMap API](http://openweathermap.org/forecast16) which allows 60 calls per minute, that's 86400 calls a day, which is much better if the app will be deployed onto the AppStore
 * Improvements to the UI
+* Display a different wallpaper based on the location of the user or of the searched parameter
 
