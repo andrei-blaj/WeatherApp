@@ -42,7 +42,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="zalau-at-night" translatesAutoresizingMaskIntoConstraints="NO" id="qvG-xQ-Vcv">
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="cluj-at-night" translatesAutoresizingMaskIntoConstraints="NO" id="qvG-xQ-Vcv">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                             </imageView>
                             <visualEffectView opaque="NO" alpha="0.69999999999999996" contentMode="center" translatesAutoresizingMaskIntoConstraints="NO" id="eM5-2H-Ath">
@@ -413,10 +413,10 @@
     </scenes>
     <resources>
         <image name="clear-day" width="190" height="193"/>
+        <image name="cluj-at-night" width="960" height="594"/>
         <image name="location" width="533" height="533"/>
         <image name="menu" width="20" height="14"/>
         <image name="search_btn" width="28" height="28"/>
         <image name="settings" width="25" height="25"/>
-        <image name="zalau-at-night" width="1024" height="768"/>
     </resources>
 </document>
