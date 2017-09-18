@@ -4,8 +4,7 @@
 
 ### Description ###
 - - - -
-A simple weather app developed for iOS <br />
-It gathers data from [Dark Sky](https://darksky.net/poweredby/) via their public API. <br />
+A simple weather app developed for iOS. It gathers data from [Dark Sky](https://darksky.net/poweredby/) via their public API. <br />
 
 ### Screenshots ###
 - - - -
