@@ -54,6 +54,8 @@ class DataService {
                 
                 // There is also and "minutely" dictionary, but in this case it is not necessary
                 
+                self.hourlyForecast = []
+                
                 if let hourly = result["hourly"] as? Dictionary<String, Any> {
                     if let summary = hourly["summary"] as? String { self.hourlySummary = summary }
                     if let icon = hourly["icon"] as? String { self.hourlyIcon = icon }
@@ -87,6 +89,8 @@ class DataService {
                         }
                     }
                 }
+                
+                self.dailyForecast = []
                 
                 if let daily = result["daily"] as? Dictionary<String, Any> {
                     if let summary = daily["summary"] as? String { self.dailySummary = summary }

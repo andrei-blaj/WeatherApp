@@ -41,6 +41,7 @@ class MainVC: UIViewController, CLLocationManagerDelegate, UITextFieldDelegate {
     var currentLocation: CLLocation!
     var searchCancelBtnState: ButtonState!
     var moreDetailsCancelBtnState: MoreDetailsButtonState!
+    var newLocation: Bool = false
     
     // View Did Load
     override func viewDidLoad() {
@@ -150,8 +151,8 @@ class MainVC: UIViewController, CLLocationManagerDelegate, UITextFieldDelegate {
                 DataService.instance.downloadDarkSkyData(completed: { (success) in
                     if success {
                         print("> Success")
+                        self.newLocation = true
                         self.fetchCoreDataObjects()
-                        self.updateLabels()
                     } else {
                         print("> Failed to obtain a response from the API.")
                     }
@@ -329,18 +330,38 @@ class MainVC: UIViewController, CLLocationManagerDelegate, UITextFieldDelegate {
         self.fetch { (success) in
             if success {
                 let settings = DataService.instance.userSettings
-                if settings.count > 0 {
-                    let mUnit = DataService.instance.currentMeasuringUnit
-                    if mUnit == "" && settings[0].measuringUnit == "C" {
-                        // do nothing go ahead and load the data
-                    } else {
-                        DataService.instance.currentMeasuringUnit = settings[0].measuringUnit!
-                        DataService.instance.convertTo(unit: settings[0].measuringUnit!)
-                    }
-                    updateLabels()
-                    updateDetails()
+                if settings.count < 1 {
+                    self.save(completion: { (success) in
+                        self.fetchCoreDataObjects()
+                        return
+                    })
                 }
+                
+                if (newLocation == true && settings[0].measuringUnit == "F") || (newLocation == false && DataService.instance.currentMeasuringUnit != "") {
+                    DataService.instance.currentMeasuringUnit = settings[0].measuringUnit!
+                    DataService.instance.convertTo(unit: settings[0].measuringUnit!)
+                    newLocation = false
+                }
+                
+                updateLabels()
+                updateDetails()
+                
             }
+        }
+    }
+    
+    func save(completion: DownloadComplete) {
+        guard let managedContext = appDelegate?.persistentContainer.viewContext else { return }
+        let userSetting = UserSettings(context: managedContext)
+        
+        userSetting.measuringUnit = "C"
+        
+        do {
+            try managedContext.save()
+            completion(true)
+        } catch {
+            debugPrint("Could not save: \(error.localizedDescription)")
+            completion(false)
         }
     }
     

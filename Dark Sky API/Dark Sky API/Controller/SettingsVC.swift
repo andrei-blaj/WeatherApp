@@ -36,20 +36,20 @@ class SettingsVC: UIViewController {
     
     @IBAction func onSecondaryUnitBtnPressed(_ sender: Any) {
         
-        var measuringUnitToSave = ""
+        var newMeasuringUnit = ""
         
         if mainUnitBtn.currentTitle == "°C" {
             mainUnitBtn.setTitle("°F", for: .normal)
             secondaryUnitBtn.setTitle("°C", for: .normal)
-            measuringUnitToSave = "F"
+            newMeasuringUnit = "F"
         } else {
             mainUnitBtn.setTitle("°C", for: .normal)
             secondaryUnitBtn.setTitle("°F", for: .normal)
-            measuringUnitToSave = "C"
+            newMeasuringUnit = "C"
         }
         
-        DataService.instance.currentMeasuringUnit = measuringUnitToSave
-        saveMeasuringUnit(newMeasuringUnit: measuringUnitToSave)
+        DataService.instance.currentMeasuringUnit = newMeasuringUnit
+        saveMeasuringUnit(newMeasuringUnit: newMeasuringUnit)
         NotificationCenter.default.post(name: NOTIF_MEASURING_UNIT_CHANGED, object: nil)
         
         self.revealViewController().revealToggle(animated: true)
@@ -59,18 +59,11 @@ class SettingsVC: UIViewController {
     func saveMeasuringUnit(newMeasuringUnit: String) {
         
         guard let managedContext = appDelegate?.persistentContainer.viewContext else { return }
-        
-        let settings = DataService.instance.userSettings
-        if settings.count < 1 {
-            return
-        }
-        
-        let userSetting = settings[0]
-        userSetting.measuringUnit = newMeasuringUnit
-        
+    
         do {
+            DataService.instance.userSettings[0].measuringUnit = newMeasuringUnit
             try managedContext.save()
-            // print("Successfully updated measuring unit!")
+            print("Successfully updated measuring unit!")
         } catch {
             debugPrint("Could not update measuring unit: \(error.localizedDescription)")
         }
@@ -81,18 +74,18 @@ class SettingsVC: UIViewController {
         self.fetch { (success) in
             if success {
                 let settings = DataService.instance.userSettings
-                if settings.count > 0 {
-                    mainUnitBtn.setTitle("°\(settings[0].measuringUnit!)", for: .normal)
+                
+                // We assume that the application loaded properly and that the
+                // Core Data contains the initial settings
                     
-                    if settings[0].measuringUnit! == "C" {
-                        secondaryUnitBtn.setTitle("°F", for: .normal)
-                    } else {
-                        secondaryUnitBtn.setTitle("°C", for: .normal)
-                    }
-                    
+                mainUnitBtn.setTitle("°\(settings[0].measuringUnit!)", for: .normal)
+                
+                if settings[0].measuringUnit! == "C" {
+                    secondaryUnitBtn.setTitle("°F", for: .normal)
                 } else {
-                    self.save(completion: { (completed) in })
+                    secondaryUnitBtn.setTitle("°C", for: .normal)
                 }
+                
             }
         }
     }
@@ -110,21 +103,6 @@ class SettingsVC: UIViewController {
             completion(false)
         }
         
-    }
-    
-    func save(completion: DownloadComplete) {
-        guard let managedContext = appDelegate?.persistentContainer.viewContext else { return }
-        let userSetting = UserSettings(context: managedContext)
-        
-        userSetting.measuringUnit = "C"
-        
-        do {
-            try managedContext.save()
-            completion(true)
-        } catch {
-            debugPrint("Could not save: \(error.localizedDescription)")
-            completion(false)
-        }
     }
     
 }
