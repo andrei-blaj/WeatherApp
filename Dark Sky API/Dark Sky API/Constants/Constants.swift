@@ -23,6 +23,18 @@ func getDarkSkyURL(forLatitude latitude: CLLocationDegrees, andLongitude longitu
     return url
 }
 
+// TimeZoneDB
+
+let TIMEZONE_BASE_URL = "http://api.timezonedb.com/v2/get-time-zone?key="
+let KEY = "S3TM2I0XC7O3"
+let FORMAT = "&format=json&by=position&lat="
+let OTHER = "&lng="
+
+func getTimeZoneUrl(forLatitude latitude: CLLocationDegrees, andLongitude longitude: CLLocationDegrees) -> String {
+        let url = "\(TIMEZONE_BASE_URL)\(KEY)\(FORMAT)\(latitude)\(OTHER)\(longitude)"
+        return url
+}
+
 // Special Characters
 let DEGREE_SIGN = "°"
 

@@ -28,6 +28,8 @@ class MainVC: UIViewController, CLLocationManagerDelegate, UITextFieldDelegate {
     @IBOutlet weak var searchTextField: UITextField!
     
     @IBOutlet weak var collectionView: UICollectionView!
+    @IBOutlet weak var viewInsideScrollView: UIView!
+    @IBOutlet weak var scrollView: UIScrollView!
     
     // More Details View Outlets
     @IBOutlet weak var moreDetailsView: UIView!
@@ -48,6 +50,7 @@ class MainVC: UIViewController, CLLocationManagerDelegate, UITextFieldDelegate {
         super.viewDidLoad()
         
         DataService.instance.currentMeasuringUnit = ""
+        viewInsideScrollView.frame.size.width = UIScreen.main.bounds.width
         
         searchTextField.delegate = self
         collectionView.delegate = self
@@ -72,6 +75,7 @@ class MainVC: UIViewController, CLLocationManagerDelegate, UITextFieldDelegate {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
+        
         self.searchTextField.alpha = 0.0
         self.moreDetailsView.alpha = 0.0
         
@@ -91,6 +95,10 @@ class MainVC: UIViewController, CLLocationManagerDelegate, UITextFieldDelegate {
             // Passing the current location coordinates to the 'Location' singleton class
             let x = currentLocation.coordinate.latitude
             let y = currentLocation.coordinate.longitude
+       
+//            if let x = currentLocation.coordinate.latitude as? Double, let y = currentLocation.coordinate.longitude as? Double {
+//                loadLocationData(forLatitude: x, andLongitude: y)
+//            }
             
             loadLocationData(forLatitude: x, andLongitude: y)
             
