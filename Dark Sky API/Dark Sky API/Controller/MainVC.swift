@@ -21,6 +21,8 @@ class MainVC: UIViewController, CLLocationManagerDelegate, UITextFieldDelegate {
     @IBOutlet weak var moreDetailsBtn: UIButton!
     @IBOutlet weak var locationBtn: UIButton!
     
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
+    
     @IBOutlet weak var cityLbl: UILabel!
     @IBOutlet weak var regionLabel: UILabel!
     @IBOutlet weak var temperatureLbl: UILabel!
@@ -343,17 +345,18 @@ class MainVC: UIViewController, CLLocationManagerDelegate, UITextFieldDelegate {
                         self.fetchCoreDataObjects()
                         return
                     })
+ 
+                } else {
+                
+                    if (newLocation == true && settings[0].measuringUnit == "F") || (newLocation == false && DataService.instance.currentMeasuringUnit != "") {
+                        DataService.instance.currentMeasuringUnit = settings[0].measuringUnit!
+                        DataService.instance.convertTo(unit: settings[0].measuringUnit!)
+                        newLocation = false
+                    }
+                
+                    updateLabels()
+                    updateDetails()
                 }
-                
-                if (newLocation == true && settings[0].measuringUnit == "F") || (newLocation == false && DataService.instance.currentMeasuringUnit != "") {
-                    DataService.instance.currentMeasuringUnit = settings[0].measuringUnit!
-                    DataService.instance.convertTo(unit: settings[0].measuringUnit!)
-                    newLocation = false
-                }
-                
-                updateLabels()
-                updateDetails()
-                
             }
         }
     }

@@ -30,6 +30,8 @@ let KEY = "S3TM2I0XC7O3"
 let FORMAT = "&format=json&by=position&lat="
 let OTHER = "&lng="
 
+// example url: http://api.timezonedb.com/v2/get-time-zone?key=S3TM2I0XC7O3&format=json&by=position&lat=47&lng=23
+
 func getTimeZoneUrl(forLatitude latitude: CLLocationDegrees, andLongitude longitude: CLLocationDegrees) -> String {
         let url = "\(TIMEZONE_BASE_URL)\(KEY)\(FORMAT)\(latitude)\(OTHER)\(longitude)"
         return url
