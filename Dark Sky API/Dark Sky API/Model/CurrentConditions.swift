@@ -10,7 +10,7 @@ import Foundation
 
 class CurrentConditions {
     
-    var _time: Double!
+    var _time: Int!
     var _summary: String!
     var _icon: String!
     var _precipIntensity: Double!
@@ -25,7 +25,7 @@ class CurrentConditions {
     var _cloudCover: Double!
     
     // Setters & Getters
-    var time: Double { get { return _time == nil ? 0.0 : _time } set { _time = newValue } }
+    var time: Int { get { return _time == nil ? 0 : _time } set { _time = newValue } }
     var summary: String { get { return _summary == nil ? "" : _summary } set { _summary = newValue } }
     var icon: String { get { return _icon == nil ? "" : _icon } set { _icon = newValue } }
     var precipIntensity: Double { get { return _precipIntensity == nil ? 0.0 : _precipIntensity } set { _precipIntensity = newValue } }

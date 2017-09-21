@@ -30,24 +30,24 @@ class DataService {
     var dailyForecast = [DailyForecast]()
     
     var timeStamp: Int!
+    var gmtOffset: Int!
     
     func downloadDarkSkyData(completed: @escaping DownloadComplete) {
         
         let darkSkyURL = getDarkSkyURL(forLatitude: Location.instance.latitude!, andLongitude: Location.instance.longitude!)
-        
         let timeZoneUrl = getTimeZoneUrl(forLatitude: Location.instance.latitude!, andLongitude: Location.instance.longitude!)
         
         Alamofire.request(timeZoneUrl).responseJSON { (response) in
             if let r = response.result.value as? Dictionary<String, Any> {
-                if let timestamp = r["timestamp"] as? Int  {
-                    self.timeStamp = timestamp
+                if let timeStamp = r["timestamp"] as? Int  {
+                    self.timeStamp = timeStamp
                     
                     Alamofire.request(darkSkyURL).responseJSON { (response) in
                         if let result = response.result.value as? Dictionary<String, Any> {
                             
                             if let currently = result["currently"] as? Dictionary<String, Any> {
                                 // Current Weather
-                                if let time = currently["time"] as? Double { self.currentConditions.time = time }
+                                if let time = currently["time"] as? Int { self.currentConditions.time = time }
                                 if let summary = currently["summary"] as? String { self.currentConditions.summary = summary }
                                 if let icon = currently["icon"] as? String { self.currentConditions.icon = icon }
                                 if let precipProbability = currently["precipProbability"] as? Double { self.currentConditions.precipProbability = precipProbability }
@@ -77,7 +77,7 @@ class DataService {
                                         
                                         cnt += 1
                                         
-                                        currentHour.time = Double(self.timeStamp + (3600 * (cnt - 4)))
+                                        currentHour.time = (self.timeStamp + (3600 * (cnt - 1)))
                                         if let summary = currently["summary"] as? String { currentHour.summary = summary }
                                         if let icon = currently["icon"] as? String { currentHour.icon = icon }
                                         if let precipProbability = currently["precipProbability"] as? Double { currentHour.precipProbability = precipProbability }
@@ -110,7 +110,7 @@ class DataService {
                                     for day in data {
                                         let currentDay = DailyForecast()
                                         
-                                        if let time = day["time"] as? Double { currentDay.time = time }
+                                        if let time = day["time"] as? Int { currentDay.time = time }
                                         if let summary = day["summary"] as? String { currentDay.summary = summary }
                                         if let icon = day["icon"] as? String { currentDay.icon = icon }
                                         if let precipProbability = day["precipProbability"] as? Double { currentDay.precipProbability = precipProbability }
@@ -187,13 +187,15 @@ class DataService {
     
     func getGMTTimeInSeconds() -> Int {
         let dateFormatter = DateFormatter()
-        dateFormatter.timeZone = TimeZone(identifier: "UTC")
+        dateFormatter.timeZone = TimeZone(secondsFromGMT: 0)
         dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"
         
         let date = Date()
         let stringGMTDate = dateFormatter.string(from: date)
         let GMTDate = dateFormatter.date(from: stringGMTDate)
         let gmtTimeInSeconds = GMTDate?.timeIntervalSince1970
+        
+        print(stringGMTDate, GMTDate)
         
         return Int(gmtTimeInSeconds!)
         

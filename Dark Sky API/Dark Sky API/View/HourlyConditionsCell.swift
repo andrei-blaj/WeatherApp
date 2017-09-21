@@ -15,10 +15,8 @@ class HourlyConditionsCell: UICollectionViewCell {
     @IBOutlet weak var conditonImage: UIImageView!
     @IBOutlet weak var hourTemperatureLbl: UILabel!
     
-    func configureCell(time: Double, image: String, temp: Double, index: Int) {
-        let date = Date(timeIntervalSince1970: time)
-        let calendar = Calendar.current
-        let hour = calendar.component(.hour, from: date)
+    func configureCell(time: Int, image: String, temp: Double, index: Int) {
+        let hour = Int((time / 3600) % 24)
         
         if index == 0 {
             hourLbl.text = "Now"
