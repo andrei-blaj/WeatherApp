@@ -185,20 +185,4 @@ class DataService {
         }
     }
     
-    func getGMTTimeInSeconds() -> Int {
-        let dateFormatter = DateFormatter()
-        dateFormatter.timeZone = TimeZone(secondsFromGMT: 0)
-        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"
-        
-        let date = Date()
-        let stringGMTDate = dateFormatter.string(from: date)
-        let GMTDate = dateFormatter.date(from: stringGMTDate)
-        let gmtTimeInSeconds = GMTDate?.timeIntervalSince1970
-        
-        print(stringGMTDate, GMTDate)
-        
-        return Int(gmtTimeInSeconds!)
-        
-    }
-    
 }

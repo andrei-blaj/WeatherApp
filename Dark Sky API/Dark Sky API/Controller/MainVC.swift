@@ -393,7 +393,7 @@ extension MainVC: UICollectionViewDelegate, UICollectionViewDataSource {
         if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "hourlyConditionsCell", for: indexPath) as? HourlyConditionsCell {
             let hour = DataService.instance.hourlyForecast[indexPath.row]
         
-            cell.configureCell(time: hour.time, image: hour.icon, temp: hour.temperature, index: indexPath.row)
+            cell.configureCell(time: hour.time, image: hour.icon, temp: hour.temperature, index: indexPath.row, precip: hour.precipProbability)
         
             return cell
         }
