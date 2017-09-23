@@ -49,7 +49,6 @@ class MainVC: UIViewController, CLLocationManagerDelegate, UITextFieldDelegate {
     @IBOutlet weak var windSpeedLbl: UILabel!
     @IBOutlet weak var rainProbabilityLbl: UILabel!
     
-    
     // Variables
     var locationManager = CLLocationManager()
     var currentLocation: CLLocation!
@@ -219,9 +218,9 @@ class MainVC: UIViewController, CLLocationManagerDelegate, UITextFieldDelegate {
             if self.moreDetailsView.alpha == 0.0 {
                 self.temperatureLbl.alpha = 1.0
                 self.searchBtn.alpha = 1.0
-                self.highTemp.alpha = 1.0
-                self.lowTemp.alpha = 0.75
             }
+            self.highTemp.alpha = 1.0
+            self.lowTemp.alpha = 0.75
             
             self.searchTextField.alpha = 0.0
         })
@@ -358,7 +357,7 @@ class MainVC: UIViewController, CLLocationManagerDelegate, UITextFieldDelegate {
     
     func getHour(fromTimestamp timestamp: Int) -> String {
         let offset = DataService.instance.gmtOffset!
-        var hour = ((timestamp + offset) / 3600) % 24
+        let hour = ((timestamp + offset) / 3600) % 24
         
         if hour < 10 {
             return "0\(hour)"
@@ -369,7 +368,7 @@ class MainVC: UIViewController, CLLocationManagerDelegate, UITextFieldDelegate {
     
     func getMinutes(fromTimestamp timestamp: Int) -> String {
         let offset = DataService.instance.gmtOffset!
-        var minutes = ((timestamp + offset) / 60) % 60
+        let minutes = ((timestamp + offset) / 60) % 60
         
         if minutes < 10 {
             return "0\(minutes)"
