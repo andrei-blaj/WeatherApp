@@ -340,23 +340,11 @@ class MainVC: UIViewController, CLLocationManagerDelegate, UITextFieldDelegate {
         
         self.moreDetailsCurrentConditionImg.image = UIImage(named: "\(DataService.instance.currentConditions.icon)")
         
-        let sunrise = DataService.instance.sunriseTime!
-        let sunset = DataService.instance.sunsetTime!
+        let sunrise = DataService.instance.dailyForecast[0].sunriseTime
+        let sunset = DataService.instance.dailyForecast[0].sunsetTime
         
-        let sunriseMeridian = sunrise.suffix(2)
-        let sunsetMeridian = sunset.suffix(2)
-        
-        if sunrise.count == 10 {
-            self.sunriseLbl.text = "0\(sunrise.prefix(4)) \(sunriseMeridian)"
-        } else {
-            self.sunriseLbl.text = "\(sunrise.prefix(5)) \(sunriseMeridian)"
-        }
-        
-        if sunset.count == 10 {
-            self.sunsetLbl.text = "0\(sunset.prefix(4)) \(sunsetMeridian)"
-        } else {
-            self.sunsetLbl.text = "\(sunset.prefix(5)) \(sunsetMeridian)"
-        }
+        self.sunriseLbl.text = "\(getHour(fromTimestamp: Int(sunrise))):\(getMinutes(fromTimestamp: Int(sunrise)))"
+        self.sunsetLbl.text = "\(getHour(fromTimestamp: Int(sunset))):\(getMinutes(fromTimestamp: Int(sunset)))"
         
         self.humidityLbl.text = "\(Int(DataService.instance.currentConditions.humidity * 100))%"
         self.pressureLbl.text = "\(Int(round((DataService.instance.currentConditions.pressure / 1000) * 29.53))) inHg"
@@ -367,6 +355,29 @@ class MainVC: UIViewController, CLLocationManagerDelegate, UITextFieldDelegate {
         collectionView.reloadData()
         
     }
+    
+    func getHour(fromTimestamp timestamp: Int) -> String {
+        let offset = DataService.instance.gmtOffset!
+        var hour = ((timestamp + offset) / 3600) % 24
+        
+        if hour < 10 {
+            return "0\(hour)"
+        }
+        
+        return "\(hour)"
+    }
+    
+    func getMinutes(fromTimestamp timestamp: Int) -> String {
+        let offset = DataService.instance.gmtOffset!
+        var minutes = ((timestamp + offset) / 60) % 60
+        
+        if minutes < 10 {
+            return "0\(minutes)"
+        }
+        
+        return "\(minutes)"
+    }
+    
     
     // Core Data
     func fetch(completion: DownloadComplete) {
