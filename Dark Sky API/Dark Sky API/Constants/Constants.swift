@@ -11,7 +11,7 @@ import CoreLocation
 
 typealias DownloadComplete = (_ completed: Bool) -> ()
 
-// Dark Sky API Data
+// Dark Sky API
 let BASE_URL = "https://api.darksky.net/forecast/"
 let API_KEY = "55ea38a504bf2cc73c48d08f25791e5d/"
 let AUTO = "auto"
@@ -23,7 +23,7 @@ func getDarkSkyURL(forLatitude latitude: CLLocationDegrees, andLongitude longitu
     return url
 }
 
-// TimeZoneDB
+// TimeZoneDB API
 
 let TIMEZONE_BASE_URL = "http://api.timezonedb.com/v2/get-time-zone?key="
 let KEY = "S3TM2I0XC7O3"
@@ -35,6 +35,18 @@ let OTHER = "&lng="
 func getTimeZoneUrl(forLatitude latitude: CLLocationDegrees, andLongitude longitude: CLLocationDegrees) -> String {
         let url = "\(TIMEZONE_BASE_URL)\(KEY)\(FORMAT)\(latitude)\(OTHER)\(longitude)"
         return url
+}
+
+// Sunrise Sunset API
+
+let SUNRISE_SUNSET_BASE_URL = "https://api.sunrise-sunset.org/json"
+let COORD1 = "?lat="
+let COORD2 = "&lng="
+let ADDITIONAL = "&date=today&formatted=1"
+
+func getSSUrl(forLatitude latitude: CLLocationDegrees, andLongitude longitude: CLLocationDegrees) -> String {
+    let url = "\(SUNRISE_SUNSET_BASE_URL)\(COORD1)\(latitude)\(COORD2)\(longitude)\(ADDITIONAL)"
+    return url
 }
 
 // Special Characters

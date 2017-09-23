@@ -36,6 +36,10 @@ class SettingsVC: UIViewController {
     
     @IBAction func onSecondaryUnitBtnPressed(_ sender: Any) {
         
+        if !DataService.instance.dataDidLoad {
+            return
+        }
+        
         var newMeasuringUnit = ""
         
         if mainUnitBtn.currentTitle == "°C" {

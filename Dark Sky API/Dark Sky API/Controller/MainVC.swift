@@ -26,6 +26,8 @@ class MainVC: UIViewController, CLLocationManagerDelegate, UITextFieldDelegate {
     @IBOutlet weak var cityLbl: UILabel!
     @IBOutlet weak var regionLabel: UILabel!
     @IBOutlet weak var temperatureLbl: UILabel!
+    @IBOutlet weak var highTemp: UILabel!
+    @IBOutlet weak var lowTemp: UILabel!
     
     @IBOutlet weak var searchTextField: UITextField!
     
@@ -40,6 +42,14 @@ class MainVC: UIViewController, CLLocationManagerDelegate, UITextFieldDelegate {
     @IBOutlet weak var moreDetailsCurrentConditionImg: UIImageView!
     @IBOutlet weak var moreDetailsHourlySummary: UILabel!
     
+    @IBOutlet weak var sunriseLbl: UILabel!
+    @IBOutlet weak var sunsetLbl: UILabel!
+    @IBOutlet weak var humidityLbl: UILabel!
+    @IBOutlet weak var pressureLbl: UILabel!
+    @IBOutlet weak var windSpeedLbl: UILabel!
+    @IBOutlet weak var rainProbabilityLbl: UILabel!
+    
+    
     // Variables
     var locationManager = CLLocationManager()
     var currentLocation: CLLocation!
@@ -50,6 +60,9 @@ class MainVC: UIViewController, CLLocationManagerDelegate, UITextFieldDelegate {
     // View Did Load
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        DataService.instance.dataDidLoad = false
+        moreDetailsBtn.isHidden = true
         
         DataService.instance.currentMeasuringUnit = ""
         viewInsideScrollView.frame.size.width = UIScreen.main.bounds.width
@@ -76,7 +89,6 @@ class MainVC: UIViewController, CLLocationManagerDelegate, UITextFieldDelegate {
     // View Will Appear
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
         
         self.searchTextField.alpha = 0.0
         self.moreDetailsView.alpha = 0.0
@@ -161,6 +173,8 @@ class MainVC: UIViewController, CLLocationManagerDelegate, UITextFieldDelegate {
                 DataService.instance.downloadDarkSkyData(completed: { (success) in
                     if success {
                         print("> Success")
+                        DataService.instance.dataDidLoad = true
+                        self.moreDetailsBtn.isHidden = false
                         self.newLocation = true
                         self.fetchCoreDataObjects()
                     } else {
@@ -179,12 +193,16 @@ class MainVC: UIViewController, CLLocationManagerDelegate, UITextFieldDelegate {
             self.cityLbl.alpha = 0.0
             self.regionLabel.alpha = 0.0
             self.temperatureLbl.alpha = 0.0
+            self.highTemp.alpha = 0.0
+            self.lowTemp.alpha = 0.0
         }
         
         cityLbl.text = Location.instance.city
         regionLabel.text = "\(Location.instance.region), \(Location.instance.countryCode)"
         
         temperatureLbl.text = " \(Int(round(DataService.instance.currentConditions.temperature)))\(DEGREE_SIGN)"
+        highTemp.text = "H:\(Int(round(DataService.instance.dailyForecast[0].temperatureHigh)))\(DEGREE_SIGN)"
+        lowTemp.text = "L:\(Int(round(DataService.instance.dailyForecast[0].temperatureLow)))\(DEGREE_SIGN)"
         
         searchCancelBtnState = .search
         
@@ -201,6 +219,8 @@ class MainVC: UIViewController, CLLocationManagerDelegate, UITextFieldDelegate {
             if self.moreDetailsView.alpha == 0.0 {
                 self.temperatureLbl.alpha = 1.0
                 self.searchBtn.alpha = 1.0
+                self.highTemp.alpha = 1.0
+                self.lowTemp.alpha = 0.75
             }
             
             self.searchTextField.alpha = 0.0
@@ -227,6 +247,8 @@ class MainVC: UIViewController, CLLocationManagerDelegate, UITextFieldDelegate {
                 self.cityLbl.alpha = 0.0
                 self.regionLabel.alpha = 0.0
                 self.temperatureLbl.alpha = 0.0
+                self.highTemp.alpha = 0.0
+                self.lowTemp.alpha = 0.0
 
                 self.searchTextField.alpha = 1.0
                 self.searchBtn.alpha = 1.0
@@ -248,6 +270,8 @@ class MainVC: UIViewController, CLLocationManagerDelegate, UITextFieldDelegate {
                 self.cityLbl.alpha = 1.0
                 self.regionLabel.alpha = 1.0
                 self.temperatureLbl.alpha = 1.0
+                self.highTemp.alpha = 1.0
+                self.lowTemp.alpha = 0.75
                 
                 self.searchTextField.alpha = 0.0
                 self.searchBtn.alpha = 1.0
@@ -315,6 +339,30 @@ class MainVC: UIViewController, CLLocationManagerDelegate, UITextFieldDelegate {
         self.moreDetailsHourlySummary.text = DataService.instance.hourlySummary
         
         self.moreDetailsCurrentConditionImg.image = UIImage(named: "\(DataService.instance.currentConditions.icon)")
+        
+        let sunrise = DataService.instance.sunriseTime!
+        let sunset = DataService.instance.sunsetTime!
+        
+        let sunriseMeridian = sunrise.suffix(2)
+        let sunsetMeridian = sunset.suffix(2)
+        
+        if sunrise.count == 10 {
+            self.sunriseLbl.text = "0\(sunrise.prefix(4)) \(sunriseMeridian)"
+        } else {
+            self.sunriseLbl.text = "\(sunrise.prefix(5)) \(sunriseMeridian)"
+        }
+        
+        if sunset.count == 10 {
+            self.sunsetLbl.text = "0\(sunset.prefix(4)) \(sunsetMeridian)"
+        } else {
+            self.sunsetLbl.text = "\(sunset.prefix(5)) \(sunsetMeridian)"
+        }
+        
+        self.humidityLbl.text = "\(Int(DataService.instance.currentConditions.humidity * 100))%"
+        self.pressureLbl.text = "\(Int(round((DataService.instance.currentConditions.pressure / 1000) * 29.53))) inHg"
+        
+        self.windSpeedLbl.text = "\(Int(round(DataService.instance.currentConditions.windSpeed * 1.6))) kph"
+        self.rainProbabilityLbl.text = "\(((Int(DataService.instance.currentConditions.precipProbability * 100) + 5) / 10) * 10)%"
         
         collectionView.reloadData()
         

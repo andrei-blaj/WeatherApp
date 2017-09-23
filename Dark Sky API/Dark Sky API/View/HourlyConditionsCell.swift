@@ -23,12 +23,7 @@ class HourlyConditionsCell: UICollectionViewCell {
             hourLbl.text = "Now"
             conditonImage.image = UIImage(named: DataService.instance.currentConditions.icon)
             hourTemperatureLbl.text = "\(Int(round(DataService.instance.currentConditions.temperature)))\(DEGREE_SIGN)"
-            if DataService.instance.currentConditions.precipProbability * 100 > 14 {
-                precipitationProbability.text = "\((Int(DataService.instance.currentConditions.precipProbability * 100) + 5) / 10) * 10)%"
-            } else {
-                precipitationProbability.text = ""
-            }
-            
+            precipitationProbability.text = ""
             
         } else {
             if hour < 10 { hourLbl.text = "0\(hour)" }
