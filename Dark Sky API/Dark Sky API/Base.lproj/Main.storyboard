@@ -629,7 +629,7 @@
                                         </subviews>
                                     </stackView>
                                     <stackView opaque="NO" contentMode="scaleToFill" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="y5c-Jl-snO">
-                                        <rect key="frame" x="30" y="183" width="204" height="35"/>
+                                        <rect key="frame" x="30" y="191" width="204" height="35"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Show H/L" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DxJ-tz-AHO">
                                                 <rect key="frame" x="0.0" y="0.0" width="135" height="35"/>
@@ -667,7 +667,7 @@
                                     <constraint firstItem="cYQ-eC-Bof" firstAttribute="top" secondItem="bmP-mM-nNO" secondAttribute="bottom" constant="35" id="0KQ-4j-dSj"/>
                                     <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="bmP-mM-nNO" secondAttribute="trailing" id="1GN-pE-Odg"/>
                                     <constraint firstAttribute="bottom" secondItem="ItG-9Q-ZU6" secondAttribute="bottom" constant="25" id="2gB-pm-WXM"/>
-                                    <constraint firstItem="y5c-Jl-snO" firstAttribute="top" secondItem="cYQ-eC-Bof" secondAttribute="bottom" constant="8" id="AAj-tb-vrk"/>
+                                    <constraint firstItem="y5c-Jl-snO" firstAttribute="top" secondItem="cYQ-eC-Bof" secondAttribute="bottom" constant="16" id="AAj-tb-vrk"/>
                                     <constraint firstItem="cYQ-eC-Bof" firstAttribute="leading" secondItem="TVR-F2-tPx" secondAttribute="leading" constant="30" id="FHp-r4-toG"/>
                                     <constraint firstItem="bmP-mM-nNO" firstAttribute="top" secondItem="TVR-F2-tPx" secondAttribute="top" constant="50" id="Gjd-9i-s2C"/>
                                     <constraint firstItem="y5c-Jl-snO" firstAttribute="leading" secondItem="TVR-F2-tPx" secondAttribute="leading" constant="30" id="QR9-Ew-vKI"/>
