@@ -628,8 +628,8 @@
                                             </button>
                                         </subviews>
                                     </stackView>
-                                    <stackView opaque="NO" contentMode="scaleToFill" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="y5c-Jl-snO">
-                                        <rect key="frame" x="30" y="191" width="204" height="35"/>
+                                    <stackView opaque="NO" contentMode="scaleToFill" spacing="70" translatesAutoresizingMaskIntoConstraints="NO" id="y5c-Jl-snO">
+                                        <rect key="frame" x="30" y="191" width="254" height="35"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Show H/L" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DxJ-tz-AHO">
                                                 <rect key="frame" x="0.0" y="0.0" width="135" height="35"/>
@@ -642,7 +642,7 @@
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="RfD-Qr-UnN">
-                                                <rect key="frame" x="155" y="0.0" width="51" height="35"/>
+                                                <rect key="frame" x="205" y="0.0" width="51" height="35"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="35" id="b6h-Hf-Tvi"/>
                                                     <constraint firstAttribute="width" constant="49" id="piI-ru-SrY"/>

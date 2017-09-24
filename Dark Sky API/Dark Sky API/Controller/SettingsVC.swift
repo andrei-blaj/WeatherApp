@@ -35,6 +35,9 @@ class SettingsVC: UIViewController {
         }
     }
     
+///////////////////////////////////////////////////////////////////      Settings Actions     ///////////////////////////////////////////////////////////////////
+    
+    // This function is called whenever the state of the switch is changed
     @IBAction func didChangeState(_ sender: Any) {
     
         if showHideSwitcher.isOn {
@@ -47,7 +50,9 @@ class SettingsVC: UIViewController {
         
         NotificationCenter.default.post(name: NOTIF_SHOW_HIDE_SWITCH_CHANGED, object: nil)
     }
-    
+
+    // This function is called whenever the user taps on the right hand button from the settings stack view
+    // It changes the elementes in the current view and also sends out a notification to change elements in the Main view controller
     @IBAction func onSecondaryUnitBtnPressed(_ sender: Any) {
         
         if !DataService.instance.dataDidLoad {
@@ -73,7 +78,9 @@ class SettingsVC: UIViewController {
         self.revealViewController().revealToggle(animated: true)
     }
     
-    // Core Data
+///////////////////////////////////////////////////////////////////      Core Data     ///////////////////////////////////////////////////////////////////
+    
+    // Saves to the persistent container the chosen measuring unit, picked by the user
     func saveMeasuringUnit(newMeasuringUnit: String) {
         
         guard let managedContext = appDelegate?.persistentContainer.viewContext else { return }
@@ -87,6 +94,7 @@ class SettingsVC: UIViewController {
         
     }
     
+    // Saves to the persistent container the chosen switch state
     func saveSwitchOption(option: Bool) {
         guard let managedContext = appDelegate?.persistentContainer.viewContext else { return }
         
@@ -98,6 +106,7 @@ class SettingsVC: UIViewController {
         }
     }
     
+    // Initialize the elements on the screen: button titles, switch state
     func fetchCoreDataObjects() {
         self.fetch { (success) in
             if success {
@@ -119,6 +128,7 @@ class SettingsVC: UIViewController {
         }
     }
     
+    // Retrieve the data from the persistent container using a fetch request
     func fetch(completion: DownloadComplete) {
         
         guard let managedContext = appDelegate?.persistentContainer.viewContext else { return }

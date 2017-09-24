@@ -61,11 +61,7 @@ class MainVC: UIViewController, CLLocationManagerDelegate, UITextFieldDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        DataService.instance.dataDidLoad = false
-        moreDetailsBtn.isHidden = true
-        
-        DataService.instance.currentMeasuringUnit = ""
-        viewInsideScrollView.frame.size.width = UIScreen.main.bounds.width
+        setupView()
         
         searchTextField.delegate = self
         collectionView.delegate = self
@@ -74,9 +70,7 @@ class MainVC: UIViewController, CLLocationManagerDelegate, UITextFieldDelegate {
         NotificationCenter.default.addObserver(self, selector: #selector(MainVC.updateLabels(_:)), name: NOTIF_MEASURING_UNIT_CHANGED, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(MainVC.updateHideShowHiddenStatus(_:)), name: NOTIF_SHOW_HIDE_SWITCH_CHANGED, object: nil)
         
-        searchCancelBtnState = .search
-        moreDetailsCancelBtnState = .more
-        
+        // When the settings button is pressed
         settingsBtn.addTarget(self.revealViewController(), action: #selector(SWRevealViewController.revealToggle(_:)), for: .touchUpInside)
         self.view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
         self.view.addGestureRecognizer(self.revealViewController().tapGestureRecognizer())
@@ -89,6 +83,20 @@ class MainVC: UIViewController, CLLocationManagerDelegate, UITextFieldDelegate {
     
     @objc func updateHideShowHiddenStatus(_ notif: Notification) {
         self.HighLowStackView.isHidden = !DataService.instance.userSettings[0].showHighLowLabel
+    }
+    
+    // Initial settings for when the view loads
+    func setupView() {
+        
+        DataService.instance.dataDidLoad = false
+        moreDetailsBtn.isHidden = true
+        
+        searchCancelBtnState = .search
+        moreDetailsCancelBtnState = .more
+        
+        DataService.instance.currentMeasuringUnit = ""
+        viewInsideScrollView.frame.size.width = UIScreen.main.bounds.width
+        
     }
     
     // View Will Appear
@@ -106,6 +114,8 @@ class MainVC: UIViewController, CLLocationManagerDelegate, UITextFieldDelegate {
         locationManager.startMonitoringSignificantLocationChanges()
     }
     
+///////////////////////////////////////////////////////////////////      Location Data     ///////////////////////////////////////////////////////////////////
+    
     // Location Manager
     func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
         if CLLocationManager.authorizationStatus() == .authorizedWhenInUse {
@@ -114,48 +124,12 @@ class MainVC: UIViewController, CLLocationManagerDelegate, UITextFieldDelegate {
             // Passing the current location coordinates to the 'Location' singleton class
             let x = currentLocation.coordinate.latitude
             let y = currentLocation.coordinate.longitude
-       
-//            if let x = currentLocation.coordinate.latitude as? Double, let y = currentLocation.coordinate.longitude as? Double {
-//                loadLocationData(forLatitude: x, andLongitude: y)
-//            }
             
             loadLocationData(forLatitude: x, andLongitude: y)
             
         } else {
             locationManager.requestWhenInUseAuthorization()
         }
-    }
-    
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        searchByUserInput()
-        return true
-    }
-    
-    // Search for a city and find its coordinates
-    func searchByUserInput() {
-        // 1. Hide the keyboard
-        self.view.endEditing(true)
-        // 2. Get the inserted text from the textField as a City Name
-        let cityName = searchTextField.text!
-        // 3. Search for the City Name using the MapKit and get the coordinates
-        let searchRequest = MKLocalSearchRequest()
-        searchRequest.naturalLanguageQuery = cityName
-        
-        let activeSearch = MKLocalSearch(request: searchRequest)
-        
-        // Search for the city name
-        activeSearch.start { (response, error) in
-            if response == nil {
-                debugPrint(error?.localizedDescription as String!)
-            } else {
-                
-                let newLatitude = response?.boundingRegion.center.latitude
-                let newLongitude = response?.boundingRegion.center.longitude
-                // Update the MainVC labels with the new information & Hide the search bar
-                self.loadLocationData(forLatitude: newLatitude!, andLongitude: newLongitude!)
-            }
-        }
-        
     }
     
     // Load the data for the passed coordinates
@@ -190,6 +164,42 @@ class MainVC: UIViewController, CLLocationManagerDelegate, UITextFieldDelegate {
         })
         
     }
+    
+///////////////////////////////////////////////////////////////////      Search Feature     ///////////////////////////////////////////////////////////////////
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        searchByUserInput()
+        return true
+    }
+    
+    // Search for a city and find its coordinates
+    func searchByUserInput() {
+        // 1. Hide the keyboard
+        self.view.endEditing(true)
+        // 2. Get the inserted text from the textField as a City Name
+        let cityName = searchTextField.text!
+        // 3. Search for the City Name using the MapKit and get the coordinates
+        let searchRequest = MKLocalSearchRequest()
+        searchRequest.naturalLanguageQuery = cityName
+        
+        let activeSearch = MKLocalSearch(request: searchRequest)
+        
+        // Search for the city name
+        activeSearch.start { (response, error) in
+            if response == nil {
+                debugPrint(error?.localizedDescription as String!)
+            } else {
+                
+                let newLatitude = response?.boundingRegion.center.latitude
+                let newLongitude = response?.boundingRegion.center.longitude
+                // Update the MainVC labels with the new information & Hide the search bar
+                self.loadLocationData(forLatitude: newLatitude!, andLongitude: newLongitude!)
+            }
+        }
+        
+    }
+  
+///////////////////////////////////////////////////////////////////      Updating On Screen Data     ///////////////////////////////////////////////////////////////////
     
     // Update the labels in the Main View Controller
     func updateLabels() {
@@ -232,6 +242,55 @@ class MainVC: UIViewController, CLLocationManagerDelegate, UITextFieldDelegate {
         })
         
     }
+    
+    // Update the labels and elements in the MoreDetailsView
+    func updateDetails() {
+        
+        self.moreDetailsTemperatureLbl.text = " \(Int(round(DataService.instance.currentConditions.temperature)))\(DEGREE_SIGN)"
+        self.moreDetailsSummaryLbl.text = DataService.instance.currentConditions.summary
+        self.moreDetailsHourlySummary.text = DataService.instance.hourlySummary
+        
+        self.moreDetailsCurrentConditionImg.image = UIImage(named: "\(DataService.instance.currentConditions.icon)")
+        
+        let sunrise = DataService.instance.dailyForecast[0].sunriseTime
+        let sunset = DataService.instance.dailyForecast[0].sunsetTime
+        
+        self.sunriseLbl.text = "\(getHour(fromTimestamp: Int(sunrise))):\(getMinutes(fromTimestamp: Int(sunrise)))"
+        self.sunsetLbl.text = "\(getHour(fromTimestamp: Int(sunset))):\(getMinutes(fromTimestamp: Int(sunset)))"
+        
+        self.humidityLbl.text = "\(Int(DataService.instance.currentConditions.humidity * 100))%"
+        self.pressureLbl.text = "\(Int(round((DataService.instance.currentConditions.pressure / 1000) * 29.53))) inHg"
+        
+        self.windSpeedLbl.text = "\(Int(round(DataService.instance.currentConditions.windSpeed * 1.6))) kph"
+        self.rainProbabilityLbl.text = "\(((Int(DataService.instance.currentConditions.precipProbability * 100) + 5) / 10) * 10)%"
+        
+        collectionView.reloadData()
+        
+    }
+    
+    func getHour(fromTimestamp timestamp: Int) -> String {
+        let offset = DataService.instance.gmtOffset!
+        let hour = ((timestamp + offset) / 3600) % 24
+        
+        if hour < 10 {
+            return "0\(hour)"
+        }
+        
+        return "\(hour)"
+    }
+    
+    func getMinutes(fromTimestamp timestamp: Int) -> String {
+        let offset = DataService.instance.gmtOffset!
+        let minutes = ((timestamp + offset) / 60) % 60
+        
+        if minutes < 10 {
+            return "0\(minutes)"
+        }
+        
+        return "\(minutes)"
+    }
+
+///////////////////////////////////////////////////////////////////      Main View Button Actions     ///////////////////////////////////////////////////////////////////
     
     // The moment the "Search" btn is pressed
     @IBAction func searchBtnPressed(_ sender: Any) {
@@ -336,55 +395,9 @@ class MainVC: UIViewController, CLLocationManagerDelegate, UITextFieldDelegate {
  
     }
     
-    // Update the labels and elements in the MoreDetailsView
-    func updateDetails() {
-        
-        self.moreDetailsTemperatureLbl.text = " \(Int(round(DataService.instance.currentConditions.temperature)))\(DEGREE_SIGN)"
-        self.moreDetailsSummaryLbl.text = DataService.instance.currentConditions.summary
-        self.moreDetailsHourlySummary.text = DataService.instance.hourlySummary
-        
-        self.moreDetailsCurrentConditionImg.image = UIImage(named: "\(DataService.instance.currentConditions.icon)")
-        
-        let sunrise = DataService.instance.dailyForecast[0].sunriseTime
-        let sunset = DataService.instance.dailyForecast[0].sunsetTime
-        
-        self.sunriseLbl.text = "\(getHour(fromTimestamp: Int(sunrise))):\(getMinutes(fromTimestamp: Int(sunrise)))"
-        self.sunsetLbl.text = "\(getHour(fromTimestamp: Int(sunset))):\(getMinutes(fromTimestamp: Int(sunset)))"
-        
-        self.humidityLbl.text = "\(Int(DataService.instance.currentConditions.humidity * 100))%"
-        self.pressureLbl.text = "\(Int(round((DataService.instance.currentConditions.pressure / 1000) * 29.53))) inHg"
-        
-        self.windSpeedLbl.text = "\(Int(round(DataService.instance.currentConditions.windSpeed * 1.6))) kph"
-        self.rainProbabilityLbl.text = "\(((Int(DataService.instance.currentConditions.precipProbability * 100) + 5) / 10) * 10)%"
-        
-        collectionView.reloadData()
-        
-    }
+///////////////////////////////////////////////////////////////////      Core Data     ///////////////////////////////////////////////////////////////////
     
-    func getHour(fromTimestamp timestamp: Int) -> String {
-        let offset = DataService.instance.gmtOffset!
-        let hour = ((timestamp + offset) / 3600) % 24
-        
-        if hour < 10 {
-            return "0\(hour)"
-        }
-        
-        return "\(hour)"
-    }
-    
-    func getMinutes(fromTimestamp timestamp: Int) -> String {
-        let offset = DataService.instance.gmtOffset!
-        let minutes = ((timestamp + offset) / 60) % 60
-        
-        if minutes < 10 {
-            return "0\(minutes)"
-        }
-        
-        return "\(minutes)"
-    }
-    
-    
-    // Core Data
+    // Retrieve the data from the persistent container using a fetch request
     func fetch(completion: DownloadComplete) {
 
         guard let managedContext = appDelegate?.persistentContainer.viewContext else { return }
@@ -400,6 +413,7 @@ class MainVC: UIViewController, CLLocationManagerDelegate, UITextFieldDelegate {
 
     }
 
+    // Initialize the information on the screen
     func fetchCoreDataObjects() {
         self.fetch { (success) in
             if success {
@@ -426,6 +440,7 @@ class MainVC: UIViewController, CLLocationManagerDelegate, UITextFieldDelegate {
         }
     }
     
+    // This save method only takes place the first time the app is installed to set the Celsius measuring unit by default
     func save(completion: DownloadComplete) {
         guard let managedContext = appDelegate?.persistentContainer.viewContext else { return }
         let userSetting = UserSettings(context: managedContext)
