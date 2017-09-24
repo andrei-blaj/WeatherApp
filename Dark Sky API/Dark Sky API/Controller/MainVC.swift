@@ -34,6 +34,7 @@ class MainVC: UIViewController, CLLocationManagerDelegate, UITextFieldDelegate {
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var viewInsideScrollView: UIView!
     @IBOutlet weak var scrollView: UIScrollView!
+    @IBOutlet weak var HighLowStackView: UIStackView!
     
     // More Details View Outlets
     @IBOutlet weak var moreDetailsView: UIView!
@@ -411,7 +412,8 @@ class MainVC: UIViewController, CLLocationManagerDelegate, UITextFieldDelegate {
                         DataService.instance.convertTo(unit: settings[0].measuringUnit!)
                         newLocation = false
                     }
-                
+                    
+                    self.HighLowStackView.isHidden = !DataService.instance.userSettings[0].showHighLowLabel
                     updateLabels()
                     updateDetails()
                 }

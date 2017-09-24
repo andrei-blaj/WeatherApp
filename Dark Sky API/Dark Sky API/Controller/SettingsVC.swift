@@ -14,6 +14,7 @@ class SettingsVC: UIViewController {
     // Outlets
     @IBOutlet weak var mainUnitBtn: UIButton!
     @IBOutlet weak var secondaryUnitBtn: UIButton!
+    @IBOutlet weak var showHideSwitcher: UISwitch!
     
     // Variables
     
@@ -32,6 +33,18 @@ class SettingsVC: UIViewController {
         if let url = URL(string: "https://darksky.net/poweredby/") {
             UIApplication.shared.open(url, options: [:], completionHandler: { (success) in })
         }
+    }
+    
+    @IBAction func didChangeState(_ sender: Any) {
+    
+        if showHideSwitcher.isOn {
+            saveSwitchOption(option: false)
+            showHideSwitcher.setOn(false, animated: true)
+        } else {
+            saveSwitchOption(option: true)
+            showHideSwitcher.setOn(true, animated: true)
+        }
+        
     }
     
     @IBAction func onSecondaryUnitBtnPressed(_ sender: Any) {
@@ -74,6 +87,18 @@ class SettingsVC: UIViewController {
         
     }
     
+    func saveSwitchOption(option: Bool) {
+        guard let managedContext = appDelegate?.persistentContainer.viewContext else { return }
+        
+        do {
+            DataService.instance.userSettings[0].showHighLowLabel = option
+            try managedContext.save()
+            print("Switch successful.")
+        } catch {
+            debugPrint("Could not switch: \(error.localizedDescription)")
+        }
+    }
+    
     func fetchCoreDataObjects() {
         self.fetch { (success) in
             if success {
@@ -83,6 +108,7 @@ class SettingsVC: UIViewController {
                 // Core Data contains the initial settings
                     
                 mainUnitBtn.setTitle("°\(settings[0].measuringUnit!)", for: .normal)
+                showHideSwitcher.setOn(settings[0].showHighLowLabel, animated: true)
                 
                 if settings[0].measuringUnit! == "C" {
                     secondaryUnitBtn.setTitle("°F", for: .normal)

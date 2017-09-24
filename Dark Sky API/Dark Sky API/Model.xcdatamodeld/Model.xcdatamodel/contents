@@ -2,8 +2,9 @@
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="13240" systemVersion="" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="UserSettings" representedClassName=".UserSettings" syncable="YES" codeGenerationType="class">
         <attribute name="measuringUnit" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="showHighLowLabel" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
     </entity>
     <elements>
-        <element name="UserSettings" positionX="-63" positionY="-18" width="128" height="58"/>
+        <element name="UserSettings" positionX="-63" positionY="-18" width="128" height="75"/>
     </elements>
 </model>
