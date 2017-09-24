@@ -72,6 +72,7 @@ class MainVC: UIViewController, CLLocationManagerDelegate, UITextFieldDelegate {
         collectionView.dataSource = self
         
         NotificationCenter.default.addObserver(self, selector: #selector(MainVC.updateLabels(_:)), name: NOTIF_MEASURING_UNIT_CHANGED, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(MainVC.updateHideShowHiddenStatus(_:)), name: NOTIF_SHOW_HIDE_SWITCH_CHANGED, object: nil)
         
         searchCancelBtnState = .search
         moreDetailsCancelBtnState = .more
@@ -84,6 +85,10 @@ class MainVC: UIViewController, CLLocationManagerDelegate, UITextFieldDelegate {
     
     @objc func updateLabels(_ notif: Notification) {
         self.fetchCoreDataObjects()
+    }
+    
+    @objc func updateHideShowHiddenStatus(_ notif: Notification) {
+        self.HighLowStackView.isHidden = !DataService.instance.userSettings[0].showHighLowLabel
     }
     
     // View Will Appear

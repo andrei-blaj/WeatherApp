@@ -54,3 +54,4 @@ let DEGREE_SIGN = "°"
 
 // Notification Constants
 let NOTIF_MEASURING_UNIT_CHANGED = Notification.Name("measuringUnitChanged")
+let NOTIF_SHOW_HIDE_SWITCH_CHANGED = Notification.Name("showHideSwitchChanged")

@@ -45,6 +45,7 @@ class SettingsVC: UIViewController {
             showHideSwitcher.setOn(true, animated: true)
         }
         
+        NotificationCenter.default.post(name: NOTIF_SHOW_HIDE_SWITCH_CHANGED, object: nil)
     }
     
     @IBAction func onSecondaryUnitBtnPressed(_ sender: Any) {
@@ -80,7 +81,6 @@ class SettingsVC: UIViewController {
         do {
             DataService.instance.userSettings[0].measuringUnit = newMeasuringUnit
             try managedContext.save()
-            print("Successfully updated measuring unit!")
         } catch {
             debugPrint("Could not update measuring unit: \(error.localizedDescription)")
         }
@@ -93,7 +93,6 @@ class SettingsVC: UIViewController {
         do {
             DataService.instance.userSettings[0].showHighLowLabel = option
             try managedContext.save()
-            print("Switch successful.")
         } catch {
             debugPrint("Could not switch: \(error.localizedDescription)")
         }
