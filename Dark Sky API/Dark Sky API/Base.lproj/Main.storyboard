@@ -647,6 +647,7 @@
                                                     <constraint firstAttribute="height" constant="35" id="b6h-Hf-Tvi"/>
                                                     <constraint firstAttribute="width" constant="49" id="piI-ru-SrY"/>
                                                 </constraints>
+                                                <color key="onTintColor" red="0.01180345658" green="0.38561591509999998" blue="0.81715887779999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <connections>
                                                     <action selector="didChangeState:" destination="Vik-fv-4rU" eventType="valueChanged" id="C33-CG-Zmf"/>
                                                 </connections>
