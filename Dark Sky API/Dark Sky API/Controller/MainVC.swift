@@ -151,7 +151,7 @@ class MainVC: UIViewController, CLLocationManagerDelegate, UITextFieldDelegate {
                 DataService.instance.getLocationData(placemark: placemark!)
                 DataService.instance.downloadDarkSkyData(completed: { (success) in
                     if success {
-                        print("> Success")
+                        // print("> Success")
                         DataService.instance.dataDidLoad = true
                         self.moreDetailsBtn.isHidden = false
                         self.newLocation = true
