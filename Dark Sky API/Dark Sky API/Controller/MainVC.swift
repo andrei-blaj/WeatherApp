@@ -216,8 +216,8 @@ class MainVC: UIViewController, CLLocationManagerDelegate, UITextFieldDelegate {
         regionLabel.text = "\(Location.instance.region), \(Location.instance.countryCode)"
         
         temperatureLbl.text = " \(Int(round(DataService.instance.currentConditions.temperature)))\(DEGREE_SIGN)"
-        highTemp.text = "H:\(Int(round(DataService.instance.dailyForecast[0].temperatureHigh)))\(DEGREE_SIGN)"
-        lowTemp.text = "L:\(Int(round(DataService.instance.dailyForecast[0].temperatureLow)))\(DEGREE_SIGN)"
+        highTemp.text = "H \(Int(round(DataService.instance.dailyForecast[0].temperatureHigh)))\(DEGREE_SIGN)"
+        lowTemp.text = "L \(Int(round(DataService.instance.dailyForecast[0].temperatureLow)))\(DEGREE_SIGN)"
         
         searchCancelBtnState = .search
         
