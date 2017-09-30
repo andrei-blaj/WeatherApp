@@ -395,6 +395,12 @@ class MainVC: UIViewController, CLLocationManagerDelegate, UITextFieldDelegate {
  
     }
     
+    // Present the Daily Forecast View Controller
+    @IBAction func onDailyForecastPressed(_ sender: Any) {
+        let dailyVC = storyboard?.instantiateViewController(withIdentifier: "DailyVC")
+        present(dailyVC!, animated: true, completion: nil)
+    }
+    
 ///////////////////////////////////////////////////////////////////      Core Data     ///////////////////////////////////////////////////////////////////
     
     // Retrieve the data from the persistent container using a fetch request

@@ -463,6 +463,9 @@
                                                         <state key="normal" title="Daily Forecast">
                                                             <color key="titleColor" red="0.99999600649999998" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                         </state>
+                                                        <connections>
+                                                            <action selector="onDailyForecastPressed:" destination="zMQ-CI-bZc" eventType="touchUpInside" id="NVY-v5-wDh"/>
+                                                        </connections>
                                                     </button>
                                                 </subviews>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -569,11 +572,50 @@
                         <outlet property="temperatureLbl" destination="PFa-Sd-XV8" id="lb6-Ne-6Kh"/>
                         <outlet property="viewInsideScrollView" destination="4H3-PB-GGl" id="aZq-Fo-5Wc"/>
                         <outlet property="windSpeedLbl" destination="zLt-rA-nXD" id="EdC-R3-OJz"/>
+                        <segue destination="4WX-AJ-bFS" kind="show" id="xJi-vh-A5k"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="9na-Yn-DA1" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1720.8" y="406.4039408866995"/>
+        </scene>
+        <!--DailyVC-->
+        <scene sceneID="894-fQ-fiL">
+            <objects>
+                <viewController storyboardIdentifier="DailyVC" id="4WX-AJ-bFS" customClass="DailyVC" customModule="Dark_Sky_API" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="mqA-sc-l4P">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="cluj-at-night" translatesAutoresizingMaskIntoConstraints="NO" id="QAC-Mx-ovf">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
+                            </imageView>
+                            <visualEffectView opaque="NO" alpha="0.69999998807907104" contentMode="center" translatesAutoresizingMaskIntoConstraints="NO" id="Es0-4m-vHP">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
+                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="lzL-He-GGu">
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                </view>
+                                <blurEffect style="light"/>
+                            </visualEffectView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstAttribute="bottom" secondItem="QAC-Mx-ovf" secondAttribute="bottom" id="1Cz-KT-Dgm"/>
+                            <constraint firstItem="Es0-4m-vHP" firstAttribute="trailing" secondItem="VRl-lM-Ugu" secondAttribute="trailing" id="5ah-U7-IyB"/>
+                            <constraint firstItem="QAC-Mx-ovf" firstAttribute="trailing" secondItem="VRl-lM-Ugu" secondAttribute="trailing" id="C9i-ZL-OC3"/>
+                            <constraint firstItem="QAC-Mx-ovf" firstAttribute="top" secondItem="mqA-sc-l4P" secondAttribute="top" id="JcE-Od-XL7"/>
+                            <constraint firstItem="QAC-Mx-ovf" firstAttribute="leading" secondItem="VRl-lM-Ugu" secondAttribute="leading" id="JqT-64-nYJ"/>
+                            <constraint firstAttribute="bottom" secondItem="Es0-4m-vHP" secondAttribute="bottom" id="Zl0-VB-2JA"/>
+                            <constraint firstItem="Es0-4m-vHP" firstAttribute="leading" secondItem="VRl-lM-Ugu" secondAttribute="leading" id="b9F-eh-tyY"/>
+                            <constraint firstItem="Es0-4m-vHP" firstAttribute="top" secondItem="mqA-sc-l4P" secondAttribute="top" id="yjg-Pv-uX6"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="VRl-lM-Ugu"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="CC7-M2-Af0" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2668" y="405.66502463054189"/>
         </scene>
         <!--SettingsVC-->
         <scene sceneID="hlZ-h2-lHL">

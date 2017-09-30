@@ -21,6 +21,7 @@
 		E4AF42C21F682AC400A82E69 /* HourlyForecast.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4AF42C11F682AC400A82E69 /* HourlyForecast.swift */; };
 		E4BE69CB1F6D7CA8002B3778 /* HourlyConditionsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4BE69CA1F6D7CA8002B3778 /* HourlyConditionsCell.swift */; };
 		E4BE69CE1F6E92CB002B3778 /* Model.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = E4BE69CC1F6E92CB002B3778 /* Model.xcdatamodeld */; };
+		E4E0FA8B1F800CBC00010B6C /* DailyVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4E0FA8A1F800CBC00010B6C /* DailyVC.swift */; };
 		E4E21D311F6993A600BD9F60 /* SettingsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4E21D301F6993A600BD9F60 /* SettingsVC.swift */; };
 		E4E21D321F699D7B00BD9F60 /* SWRevealViewController.h in Sources */ = {isa = PBXBuildFile; fileRef = E4E21D2F1F69924400BD9F60 /* SWRevealViewController.h */; };
 		E4E21D331F699D8200BD9F60 /* SWRevealViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E4E21D2E1F69924400BD9F60 /* SWRevealViewController.m */; };
@@ -47,6 +48,7 @@
 		E4AF42C11F682AC400A82E69 /* HourlyForecast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HourlyForecast.swift; sourceTree = "<group>"; };
 		E4BE69CA1F6D7CA8002B3778 /* HourlyConditionsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HourlyConditionsCell.swift; sourceTree = "<group>"; };
 		E4BE69CD1F6E92CB002B3778 /* Model.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model.xcdatamodel; sourceTree = "<group>"; };
+		E4E0FA8A1F800CBC00010B6C /* DailyVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyVC.swift; sourceTree = "<group>"; };
 		E4E21D2D1F69924300BD9F60 /* Dark Sky API-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Dark Sky API-Bridging-Header.h"; sourceTree = "<group>"; };
 		E4E21D2E1F69924400BD9F60 /* SWRevealViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SWRevealViewController.m; sourceTree = "<group>"; };
 		E4E21D2F1F69924400BD9F60 /* SWRevealViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SWRevealViewController.h; sourceTree = "<group>"; };
@@ -119,6 +121,7 @@
 			children = (
 				E44204FB1F672CAD00A5D9DC /* MainVC.swift */,
 				E4E21D301F6993A600BD9F60 /* SettingsVC.swift */,
+				E4E0FA8A1F800CBC00010B6C /* DailyVC.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -313,6 +316,7 @@
 				E4E21D331F699D8200BD9F60 /* SWRevealViewController.m in Sources */,
 				E4BE69CE1F6E92CB002B3778 /* Model.xcdatamodeld in Sources */,
 				E4E21D321F699D7B00BD9F60 /* SWRevealViewController.h in Sources */,
+				E4E0FA8B1F800CBC00010B6C /* DailyVC.swift in Sources */,
 				E4596ECD1F67A6B00070EF5B /* DailyForecast.swift in Sources */,
 				E4E21D3A1F69E35A00BD9F60 /* Enums.swift in Sources */,
 				E4AF42C21F682AC400A82E69 /* HourlyForecast.swift in Sources */,
