@@ -104,7 +104,10 @@ class MainVC: UIViewController, CLLocationManagerDelegate, UITextFieldDelegate {
         super.viewWillAppear(animated)
         
         self.searchTextField.alpha = 0.0
-        self.moreDetailsView.alpha = 0.0
+        
+        if DataService.instance.didShowDailyForecast == false {
+            self.moreDetailsView.alpha = 0.0
+        }
         
         DataService.instance.currentMeasuringUnit = ""
         
@@ -313,6 +316,7 @@ class MainVC: UIViewController, CLLocationManagerDelegate, UITextFieldDelegate {
                 self.temperatureLbl.alpha = 0.0
                 self.highTemp.alpha = 0.0
                 self.lowTemp.alpha = 0.0
+                self.moreDetailsBtn.alpha = 0.0
 
                 self.searchTextField.alpha = 1.0
                 self.searchBtn.alpha = 1.0
@@ -336,6 +340,7 @@ class MainVC: UIViewController, CLLocationManagerDelegate, UITextFieldDelegate {
                 self.temperatureLbl.alpha = 1.0
                 self.highTemp.alpha = 1.0
                 self.lowTemp.alpha = 0.75
+                self.moreDetailsBtn.alpha = 1.0
                 
                 self.searchTextField.alpha = 0.0
                 self.searchBtn.alpha = 1.0
@@ -397,8 +402,9 @@ class MainVC: UIViewController, CLLocationManagerDelegate, UITextFieldDelegate {
     
     // Present the Daily Forecast View Controller
     @IBAction func onDailyForecastPressed(_ sender: Any) {
+        DataService.instance.didShowDailyForecast = true
         let dailyVC = storyboard?.instantiateViewController(withIdentifier: "DailyVC")
-        present(dailyVC!, animated: true, completion: nil)
+        presentDetail(dailyVC!)
     }
     
 ///////////////////////////////////////////////////////////////////      Core Data     ///////////////////////////////////////////////////////////////////

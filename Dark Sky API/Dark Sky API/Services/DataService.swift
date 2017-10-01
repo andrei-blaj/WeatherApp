@@ -18,6 +18,7 @@ class DataService {
     var currentMeasuringUnit: String!
     var userSettings = [UserSettings]()
     var dataDidLoad: Bool!
+    var didShowDailyForecast: Bool = false
     
     // Weather Conditions
     let currentConditions = CurrentConditions()

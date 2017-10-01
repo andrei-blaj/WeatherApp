@@ -21,7 +21,9 @@
 		E4AF42C21F682AC400A82E69 /* HourlyForecast.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4AF42C11F682AC400A82E69 /* HourlyForecast.swift */; };
 		E4BE69CB1F6D7CA8002B3778 /* HourlyConditionsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4BE69CA1F6D7CA8002B3778 /* HourlyConditionsCell.swift */; };
 		E4BE69CE1F6E92CB002B3778 /* Model.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = E4BE69CC1F6E92CB002B3778 /* Model.xcdatamodeld */; };
+		E4C87F0F1F8132EB00228CC9 /* DailyCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4C87F0E1F8132EB00228CC9 /* DailyCell.swift */; };
 		E4E0FA8B1F800CBC00010B6C /* DailyVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4E0FA8A1F800CBC00010B6C /* DailyVC.swift */; };
+		E4E0FA8E1F80170D00010B6C /* UIViewControllerExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4E0FA8D1F80170D00010B6C /* UIViewControllerExt.swift */; };
 		E4E21D311F6993A600BD9F60 /* SettingsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4E21D301F6993A600BD9F60 /* SettingsVC.swift */; };
 		E4E21D321F699D7B00BD9F60 /* SWRevealViewController.h in Sources */ = {isa = PBXBuildFile; fileRef = E4E21D2F1F69924400BD9F60 /* SWRevealViewController.h */; };
 		E4E21D331F699D8200BD9F60 /* SWRevealViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E4E21D2E1F69924400BD9F60 /* SWRevealViewController.m */; };
@@ -48,7 +50,9 @@
 		E4AF42C11F682AC400A82E69 /* HourlyForecast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HourlyForecast.swift; sourceTree = "<group>"; };
 		E4BE69CA1F6D7CA8002B3778 /* HourlyConditionsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HourlyConditionsCell.swift; sourceTree = "<group>"; };
 		E4BE69CD1F6E92CB002B3778 /* Model.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model.xcdatamodel; sourceTree = "<group>"; };
+		E4C87F0E1F8132EB00228CC9 /* DailyCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyCell.swift; sourceTree = "<group>"; };
 		E4E0FA8A1F800CBC00010B6C /* DailyVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyVC.swift; sourceTree = "<group>"; };
+		E4E0FA8D1F80170D00010B6C /* UIViewControllerExt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewControllerExt.swift; sourceTree = "<group>"; };
 		E4E21D2D1F69924300BD9F60 /* Dark Sky API-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Dark Sky API-Bridging-Header.h"; sourceTree = "<group>"; };
 		E4E21D2E1F69924400BD9F60 /* SWRevealViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SWRevealViewController.m; sourceTree = "<group>"; };
 		E4E21D2F1F69924400BD9F60 /* SWRevealViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SWRevealViewController.h; sourceTree = "<group>"; };
@@ -99,6 +103,7 @@
 		E44204F81F672CAD00A5D9DC /* Dark Sky API */ = {
 			isa = PBXGroup;
 			children = (
+				E4E0FA8C1F8016B700010B6C /* Extenstions */,
 				E4E21D361F69E33300BD9F60 /* Enums */,
 				E4E21D2A1F69916000BD9F60 /* Supporting Files */,
 				E442050F1F672DB000A5D9DC /* Services */,
@@ -131,6 +136,7 @@
 			children = (
 				E4E21D341F69DFCE00BD9F60 /* CustomTextField.swift */,
 				E4BE69CA1F6D7CA8002B3778 /* HourlyConditionsCell.swift */,
+				E4C87F0E1F8132EB00228CC9 /* DailyCell.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -160,6 +166,14 @@
 				E4596EC41F672F530070EF5B /* DataService.swift */,
 			);
 			path = Services;
+			sourceTree = "<group>";
+		};
+		E4E0FA8C1F8016B700010B6C /* Extenstions */ = {
+			isa = PBXGroup;
+			children = (
+				E4E0FA8D1F80170D00010B6C /* UIViewControllerExt.swift */,
+			);
+			path = Extenstions;
 			sourceTree = "<group>";
 		};
 		E4E21D2A1F69916000BD9F60 /* Supporting Files */ = {
@@ -319,9 +333,11 @@
 				E4E0FA8B1F800CBC00010B6C /* DailyVC.swift in Sources */,
 				E4596ECD1F67A6B00070EF5B /* DailyForecast.swift in Sources */,
 				E4E21D3A1F69E35A00BD9F60 /* Enums.swift in Sources */,
+				E4C87F0F1F8132EB00228CC9 /* DailyCell.swift in Sources */,
 				E4AF42C21F682AC400A82E69 /* HourlyForecast.swift in Sources */,
 				E44204FC1F672CAD00A5D9DC /* MainVC.swift in Sources */,
 				E44204FA1F672CAD00A5D9DC /* AppDelegate.swift in Sources */,
+				E4E0FA8E1F80170D00010B6C /* UIViewControllerExt.swift in Sources */,
 				E4596EC71F6731EB0070EF5B /* Location.swift in Sources */,
 				E44205111F672E1000A5D9DC /* Constants.swift in Sources */,
 				E4E21D351F69DFCE00BD9F60 /* CustomTextField.swift in Sources */,
