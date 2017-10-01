@@ -11,6 +11,9 @@ import CoreLocation
 
 typealias DownloadComplete = (_ completed: Bool) -> ()
 
+// Day dictionary
+let DAY_DICTIONARY = [1 : "Monday", 2 : "Tuesday", 3 : "Wednesday", 4 : "Thurday", 5 : "Friday", 6 : "Saturday", 7 : "Sunday"]
+
 // Dark Sky API
 let BASE_URL = "https://api.darksky.net/forecast/"
 let API_KEY = "55ea38a504bf2cc73c48d08f25791e5d/"

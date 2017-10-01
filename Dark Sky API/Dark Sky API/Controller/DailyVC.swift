@@ -52,7 +52,14 @@ extension DailyVC: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if let cell = tableView.dequeueReusableCell(withIdentifier: "dailyCell", for: indexPath) as? DailyCell {
             
+            let day = DataService.instance.dailyForecast[indexPath.row]
             
+            let time = day.time
+            let image = day.icon
+            let highTemp = day.temperatureHigh
+            let lowTemp = day.temperatureLow
+            
+            cell.configureCell(day: time, image: image, highTemp: highTemp, lowTemp: lowTemp)
             
             return cell
         }

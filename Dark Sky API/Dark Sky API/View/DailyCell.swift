@@ -15,7 +15,15 @@ class DailyCell: UITableViewCell {
     @IBOutlet weak var highTempLbl: UILabel!
     @IBOutlet weak var lowTempLbl: UILabel!
     
-    func configureCell(day: Int, iamge: String, highTemp: Double, lowTemp: Double) {
+    func configureCell(day: Int, image: String, highTemp: Double, lowTemp: Double) {
+        
+        let date = Date(timeIntervalSince1970: TimeInterval(day))
+        let weekDay = Calendar.current.component(.weekday, from: date)
+        
+        dayLabel.text = DAY_DICTIONARY[weekDay]
+        iconImageView.image = UIImage(named: image)
+        highTempLbl.text = "\(Int(round(highTemp)))\(DEGREE_SIGN)"
+        lowTempLbl.text = "\(Int(round(lowTemp)))\(DEGREE_SIGN)"
         
     }
 
